@@ -1,1 +1,0 @@
-/usr/bin/c++ -rdynamic CMakeFiles/test_matplotlib.dir/test_matplotlib.cpp.o -o test_matplotlib  -lpython3.8 

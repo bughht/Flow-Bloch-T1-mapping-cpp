@@ -1,2 +1,0 @@
-/usr/bin/ar qc libBlochSim.a CMakeFiles/BlochSim.dir/BlochSim.cpp.o
-/usr/bin/ranlib libBlochSim.a

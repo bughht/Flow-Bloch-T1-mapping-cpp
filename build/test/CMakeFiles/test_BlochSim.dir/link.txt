@@ -1,1 +1,0 @@
-/usr/bin/c++ -rdynamic CMakeFiles/test_BlochSim.dir/test_BlochSim.cpp.o -o test_BlochSim  ../src/BlochSim/libBlochSim.a 

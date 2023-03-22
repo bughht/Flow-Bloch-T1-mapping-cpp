@@ -1,1 +1,0 @@
-/usr/bin/c++ -rdynamic CMakeFiles/helloworld.dir/helloworld.cpp.o -o helloworld  ../src/BlochSim/libBlochSim.a 
