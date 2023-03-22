@@ -1,14 +1,5 @@
 #include "M_voxel.h"
 
-ADC_args::ADC_args(void)
-{
-    this->M = Vector3d(0, 0, 0);
-    this->Mz = 0;
-    this->Mxy = {0, 0};
-    this->amplitude = 0;
-    this->phase = 0;
-}
-
 ADC_args::ADC_args(Vector3d M)
 {
     this->M = M;
@@ -41,8 +32,11 @@ M_voxel::~M_voxel()
 
 void M_voxel::flip(double FA)
 {
-    Matrix3d R = Rz(FA);
+    double theta = FA * M_PI / 180;
+    Matrix3d R = Ry(theta);
+    // std::cout << "origin" << this->M.transpose() << std::endl;
     this->M = R * this->M;
+    // std::cout << "flipped" << this->M.transpose() << std::endl;
 }
 
 void M_voxel::free_precess(double T, double Gx, double Gy)

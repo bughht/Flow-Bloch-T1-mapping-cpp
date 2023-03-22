@@ -6,6 +6,7 @@
 add_executable(test_BlochSim test_BlochSim.cpp )
 add_executable(test_yaml test_yaml.cpp )
 add_executable(test_matplotlib test_matplotlib.cpp )
+add_executable(test_opencv test_opencv.cpp )
 
 target_link_libraries(test_BlochSim BlochSim)
 target_link_libraries(test_yaml SeqLoader)
@@ -14,4 +15,5 @@ target_link_libraries(test_matplotlib
         ${PYTHON_LIBRARIES}
         Python3::NumPy
 )
+target_link_libraries(test_opencv ${OpenCV_LIBS})
 

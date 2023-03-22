@@ -8,3 +8,4 @@ target_link_libraries(SeqSimulator
     ${PYTHON_LIBRARIES}
     Python3::NumPy
 )
+target_link_libraries(SeqSimulator ${OpenCV_LIBS}) 
