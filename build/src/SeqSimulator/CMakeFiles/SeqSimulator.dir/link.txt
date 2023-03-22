@@ -1,0 +1,2 @@
+/usr/bin/ar qc libSeqSimulator.a CMakeFiles/SeqSimulator.dir/SeqSimulator.cpp.o
+/usr/bin/ranlib libSeqSimulator.a

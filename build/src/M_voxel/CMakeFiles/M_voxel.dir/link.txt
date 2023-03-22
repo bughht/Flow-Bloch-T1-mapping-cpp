@@ -1,0 +1,2 @@
+/usr/bin/ar qc libM_voxel.a CMakeFiles/M_voxel.dir/M_voxel.cpp.o
+/usr/bin/ranlib libM_voxel.a
