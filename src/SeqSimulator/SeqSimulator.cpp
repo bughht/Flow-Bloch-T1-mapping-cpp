@@ -1,4 +1,5 @@
 #include "SeqSimulator.h"
+#include "tqdm.hpp"
 
 void simulate_single(vector<TS> seq, M_voxel m, vector<int> k_shape)
 {
@@ -82,8 +83,10 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
 
     ADC_args adc(0, 0, 0);
 
-    for (TS ts : seq)
+    for (TS ts : tq::tqdm(seq))
+    // for (int ts_idx : tq::trange(seq.size()))
     {
+        // TS &ts = seq[ts_idx];
         // for (M_voxel m : m_plane)
         for (int m_idx = 0; m_idx < m_plane.size(); m_idx++)
         {
@@ -145,6 +148,10 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
     cv::magnitude(spatial_[0], spatial_[1], spatial);
     cv::magnitude(k_space_[0], k_space_[1], k_space);
     cv::normalize(spatial, spatial, 0, 1, cv::NORM_MINMAX);
+    auto roi_up = cv::Rect(0, 0, k_shape[1], k_shape[0] / 2);
+    auto roi_down = cv::Rect(0, k_shape[0] / 2, k_shape[1], k_shape[0] / 2);
+    cv::flip(spatial(roi_up), spatial(roi_up), 0);
+    cv::flip(spatial(roi_down), spatial(roi_down), 0);
 
     cv::namedWindow("k_space", cv::WINDOW_NORMAL);
     cv::namedWindow("spatial", cv::WINDOW_NORMAL);

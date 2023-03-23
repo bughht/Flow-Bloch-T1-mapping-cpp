@@ -2,6 +2,17 @@
 
 Transplant from [FLOW-BLOCH-T1-MAPPING](https://github.com/bughht/Flow-Bloch-T1-mapping) to C++ version for higher performance.
 
+## Requirements
+
+- CMake >= 3.0
+- OpenCV
+- Eigen3
+- Yaml-cpp
+- Python3
+    - numpy
+    - matplotlib
+
+
 ## Usage
 
 ```bash
@@ -12,4 +23,4 @@ mkdir build
 
 ## TODO
 
-FFT, k-space, FLOW simulation
+k-space, FLOW simulation

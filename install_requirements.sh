@@ -13,3 +13,7 @@ cd build
 cmake -DBUILD_SHARED_LIBS=ON ..
 sudo make install
 
+# Install tqdm-cpp
+cd ../..
+git clone https://gitlab.com/miguelraggi/tqdm-cpp.git
+cp tqdm-cpp/tqdm.hpp  ../include/tqdm.hpp
