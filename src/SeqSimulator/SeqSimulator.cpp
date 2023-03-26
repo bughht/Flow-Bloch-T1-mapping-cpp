@@ -83,6 +83,16 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
 
     ADC_args adc(0, 0, 0);
 
+    vector<double> spx, spy;
+    vector<double> Mx, My;
+    for (int i = 0; i < m_plane.size(); i++)
+    {
+        spx.push_back(m_plane[i].pos[0]);
+        spy.push_back(m_plane[i].pos[1]);
+        Mx.push_back(m_plane[i].M[0]);
+        My.push_back(m_plane[i].M[1]);
+    }
+
     for (TS ts : tq::tqdm(seq))
     // for (int ts_idx : tq::trange(seq.size()))
     {
@@ -110,6 +120,8 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
                     t_readout.push_back(ts.t);
                     signal_readout.push_back(adc);
                 }
+                Mx[m_idx] = adc.Mxy.real();
+                My[m_idx] = adc.Mxy.imag();
                 k_space_real.at<double>(ts.kx, ts.ky) += adc.Mxy.real();
                 k_space_imag.at<double>(ts.kx, ts.ky) += adc.Mxy.imag();
                 break;
@@ -117,10 +129,18 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
                 break;
             }
         }
-        // std::cout << "t " << t << " t_loc " << ts.t << " M " << m_idx << std::endl;
-        //   << m.M << std::endl;
-        // 1
-        t = ts.t;
+        if (ts.type == ADC)
+        {
+            plt::quiver(spx, spy, Mx, My);
+            plt::show();
+            std::cout << "ADC " << ts.t << std::endl;
+        }
+        if (ts.type != ADC)
+
+            // std::cout << "t " << t << " t_loc " << ts.t << " M " << m_idx << std::endl;
+            //   << m.M << std::endl;
+            // 1
+            t = ts.t;
     }
     vector<double> Mxy_h, Phase_h, Mz_h;
     for (ADC_args adc : signal_readout)
@@ -143,15 +163,30 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
 
     cv::Mat k_space, spatial;
     cv::merge(k_space_, 2, k_space);
+
+    // cv::flip(k_space(roi_upleft), k_space(roi_upleft), -1);
+    // cv::flip(k_space(roi_upright), k_space(roi_upright), -1);
+    // cv::flip(k_space(roi_downleft), k_space(roi_downleft), -1);
+    // cv::flip(k_space(roi_downright), k_space(roi_downright), -1);
+
     cv::idft(k_space, spatial);
     cv::split(spatial, spatial_);
     cv::magnitude(spatial_[0], spatial_[1], spatial);
     cv::magnitude(k_space_[0], k_space_[1], k_space);
     cv::normalize(spatial, spatial, 0, 1, cv::NORM_MINMAX);
-    auto roi_up = cv::Rect(0, 0, k_shape[1], k_shape[0] / 2);
-    auto roi_down = cv::Rect(0, k_shape[0] / 2, k_shape[1], k_shape[0] / 2);
-    cv::flip(spatial(roi_up), spatial(roi_up), 0);
-    cv::flip(spatial(roi_down), spatial(roi_down), 0);
+
+    auto roi_upleft = cv::Rect(0, 0, k_shape[1] / 2, k_shape[0] / 2);
+    auto roi_upright = cv::Rect(k_shape[1] / 2, 0, k_shape[1] / 2, k_shape[0] / 2);
+    auto roi_downleft = cv::Rect(0, k_shape[0] / 2, k_shape[1] / 2, k_shape[0] / 2);
+    auto roi_downright = cv::Rect(k_shape[1] / 2, k_shape[0] / 2, k_shape[1] / 2, k_shape[0] / 2);
+    // auto roi_up = cv::Rect(0, 0, k_shape[1], k_shape[0] / 2);
+    // auto roi_down = cv::Rect(0, k_shape[0] / 2, k_shape[1], k_shape[0] / 2);
+    // cv::flip(spatial(roi_up), spatial(roi_up), 0);
+    // cv::flip(spatial(roi_down), spatial(roi_down), 0);
+    cv::flip(spatial(roi_upleft), spatial(roi_upleft), -1);
+    cv::flip(spatial(roi_upright), spatial(roi_upright), -1);
+    cv::flip(spatial(roi_downleft), spatial(roi_downleft), -1);
+    cv::flip(spatial(roi_downright), spatial(roi_downright), -1);
 
     cv::namedWindow("k_space", cv::WINDOW_NORMAL);
     cv::namedWindow("spatial", cv::WINDOW_NORMAL);
