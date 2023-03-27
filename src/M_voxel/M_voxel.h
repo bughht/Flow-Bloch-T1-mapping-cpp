@@ -7,6 +7,8 @@
 #include <complex>
 #include <BlochSim.h>
 
+const double GAMMA = 42577478.518;
+
 using Eigen::Matrix3d;
 using Eigen::Vector3d;
 using std::complex;

@@ -41,7 +41,8 @@ void M_voxel::flip(double FA)
 
 void M_voxel::free_precess(double T, double Gx, double Gy)
 {
-    double df = Gx * this->pos(0) + Gy * this->pos(1);
+    // std::cout << "Gx: " << Gx << ", Gy: " << Gy << ", t: " << T << std::endl;
+    double df = GAMMA * Gx * this->pos(0) + GAMMA * Gy * this->pos(1);
     FP_args AB = freeprecess(T, this->T1, this->T2, df);
     this->M = AB.A * this->M + AB.B;
 }

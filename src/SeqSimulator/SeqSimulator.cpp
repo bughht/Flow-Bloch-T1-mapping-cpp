@@ -93,6 +93,9 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
         My.push_back(m_plane[i].M[1]);
     }
 
+    int adc_id = 0;
+    bool adc_now = false;
+
     for (TS ts : tq::tqdm(seq))
     // for (int ts_idx : tq::trange(seq.size()))
     {
@@ -101,46 +104,68 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
         for (int m_idx = 0; m_idx < m_plane.size(); m_idx++)
         {
             M_voxel &m = m_plane[m_idx];
+            // std::cout << ts.t << ", " << t << ", " << ts.t - t << ", " << Gx << ", " << Gy << std::endl;
             m.free_precess(ts.t - t, Gx, Gy);
-            switch (ts.type)
+            Mx[m_idx] = m.readout().Mxy.real();
+            My[m_idx] = m.readout().Mxy.imag();
+            if (ts.type == PULSE)
             {
-            case PULSE:
                 m.flip(ts.FA);
-                break;
-            case GX:
-                Gx = ts.G;
-                break;
-            case GY:
-                Gy = ts.G;
-                break;
-            case ADC:
+            }
+            if (ts.type == ADC)
+            {
+                if (!adc_now)
+                {
+                    adc_id++;
+                    adc_now = true;
+                }
                 adc = m.readout();
                 if (m_idx == 0)
                 {
                     t_readout.push_back(ts.t);
                     signal_readout.push_back(adc);
                 }
-                Mx[m_idx] = adc.Mxy.real();
-                My[m_idx] = adc.Mxy.imag();
-                k_space_real.at<double>(ts.kx, ts.ky) += adc.Mxy.real();
-                k_space_imag.at<double>(ts.kx, ts.ky) += adc.Mxy.imag();
-                break;
-            default:
-                break;
+                if (adc_id % 2)
+                {
+                    k_space_real.at<double>(ts.kx, ts.ky) += adc.Mxy.real();
+                    k_space_imag.at<double>(ts.kx, ts.ky) += adc.Mxy.imag();
+                }
+                else
+                {
+                    k_space_real.at<double>(ts.kx, ts.ky) -= adc.Mxy.real();
+                    k_space_imag.at<double>(ts.kx, ts.ky) -= adc.Mxy.imag();
+                }
+                // std::cout << "m_idx: " << m_idx << " Pos " << m.pos << " Mxy " << adc.Mxy.real() << " " << adc.Mxy.imag() << std::endl;
+            }
+            else
+            {
+                if (adc_now)
+                    adc_now = false;
             }
         }
-        if (ts.type == ADC)
+        switch (ts.type)
         {
-            plt::quiver(spx, spy, Mx, My);
-            plt::show();
-            std::cout << "ADC " << ts.t << std::endl;
+        case GX:
+            Gx = ts.G;
+            break;
+        case GY:
+            Gy = ts.G;
+            break;
+        default:
+            break;
         }
-        if (ts.type != ADC)
+        plt::figure();
+        plt::quiver(spx, spy, Mx, My);
+        plt::show();
+        // std::cout << std::endl
+        //           << ts.type << "\t" << ts.t << "\t" << Gx << "\t" << Gy << std::endl;
+        // std::cout << std::endl
+        //           << "ADC " << adc_id << std::endl;
+        t = ts.t;
 
-            // std::cout << "t " << t << " t_loc " << ts.t << " M " << m_idx << std::endl;
-            //   << m.M << std::endl;
-            // 1
-            t = ts.t;
+        // std::cout << "t " << t << " t_loc " << ts.t << " M " << m_idx << std::endl;
+        //   << m.M << std::endl;
+        // 1
     }
     vector<double> Mxy_h, Phase_h, Mz_h;
     for (ADC_args adc : signal_readout)
@@ -174,6 +199,7 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
     cv::magnitude(spatial_[0], spatial_[1], spatial);
     cv::magnitude(k_space_[0], k_space_[1], k_space);
     cv::normalize(spatial, spatial, 0, 1, cv::NORM_MINMAX);
+    // cv::normalize(k_space, k_space, 0, 1, cv::NORM_MINMAX);
 
     auto roi_upleft = cv::Rect(0, 0, k_shape[1] / 2, k_shape[0] / 2);
     auto roi_upright = cv::Rect(k_shape[1] / 2, 0, k_shape[1] / 2, k_shape[0] / 2);
@@ -190,7 +216,7 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
 
     cv::namedWindow("k_space", cv::WINDOW_NORMAL);
     cv::namedWindow("spatial", cv::WINDOW_NORMAL);
-    cv::imshow("k_space", k_space);
+    cv::imshow("k_space", k_space / 20);
     cv::imshow("spatial", spatial);
     cv::waitKey(0);
 }
