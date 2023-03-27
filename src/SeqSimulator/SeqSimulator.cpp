@@ -147,18 +147,21 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
         {
         case GX:
             Gx = ts.G;
+            // std::cout << std::endl
+            //   << ts.type << "\t" << ts.t << "\t" << Gx << "\t" << Gy << std::endl;
             break;
         case GY:
             Gy = ts.G;
+            // std::cout << std::endl
+            //   << ts.type << "\t" << ts.t << "\t" << Gx << "\t" << Gy << std::endl;
             break;
         default:
             break;
         }
-        plt::figure();
-        plt::quiver(spx, spy, Mx, My);
-        plt::show();
-        // std::cout << std::endl
-        //           << ts.type << "\t" << ts.t << "\t" << Gx << "\t" << Gy << std::endl;
+        // plt::figure();
+        // plt::quiver(spx, spy, Mx, My);
+        // plt::show();
+
         // std::cout << std::endl
         //           << "ADC " << adc_id << std::endl;
         t = ts.t;
