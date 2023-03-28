@@ -201,6 +201,8 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
     cv::split(spatial, spatial_);
     cv::magnitude(spatial_[0], spatial_[1], spatial);
     cv::magnitude(k_space_[0], k_space_[1], k_space);
+    // spatial /= (spatial.rows * spatial.cols);
+    // spatial /= tan(10 * 180 / M_PI);
     cv::normalize(spatial, spatial, 0, 1, cv::NORM_MINMAX);
     // cv::normalize(k_space, k_space, 0, 1, cv::NORM_MINMAX);
 
@@ -222,4 +224,117 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
     cv::imshow("k_space", k_space / 20);
     cv::imshow("spatial", spatial);
     cv::waitKey(0);
+}
+
+void simulate_volume(vector<TS> seq, vector<M_voxel> m_voxels, vector<int> kshape, fs::path save_path)
+{
+    double t = 0;
+    double Gx = 0, Gy = 0;
+    vector<double> t_readout;
+
+    cv::Mat k_space_real = cv::Mat_<double>(kshape[0], kshape[1], 0.0);
+    cv::Mat k_space_imag = cv::Mat_<double>(kshape[0], kshape[1], 0.0);
+    cv::Mat spatial_real = cv::Mat_<double>(kshape[0], kshape[1], 0.0);
+    cv::Mat spatial_imag = cv::Mat_<double>(kshape[0], kshape[1], 0.0);
+
+    ADC_args adc(0, 0, 0);
+
+    int ADC_counter = 0;
+    bool ADC_now = false;
+    int readout_id = 0;
+    for (TS ts : tq::tqdm(seq))
+    {
+        if (ts.type == READOUT_START)
+        {
+            std::cout << "START READOUT" << std::endl;
+            k_space_real = cv::Mat_<double>(kshape[0], kshape[1], 0.0);
+            k_space_imag = cv::Mat_<double>(kshape[0], kshape[1], 0.0);
+        }
+        if (ts.type == READOUT_END)
+        {
+            std::cout << "END READOUT" << std::endl;
+            cv::Mat k_space_[2] = {k_space_real, k_space_imag};
+            cv::Mat spatial_[2] = {spatial_real, spatial_imag};
+            cv::Mat k_space, spatial;
+            cv::merge(k_space_, 2, k_space);
+            cv::idft(k_space, spatial);
+            cv::split(spatial, spatial_);
+            cv::magnitude(spatial_[0], spatial_[1], spatial);
+            cv::magnitude(k_space_[0], k_space_[1], k_space);
+            // cv::normalize(spatial, spatial, 0, 1, cv::NORM_MINMAX);
+            auto roi_upleft = cv::Rect(0, 0, kshape[1] / 2, kshape[0] / 2);
+            auto roi_upright = cv::Rect(kshape[1] / 2, 0, kshape[1] / 2, kshape[0] / 2);
+            auto roi_downleft = cv::Rect(0, kshape[0] / 2, kshape[1] / 2, kshape[0] / 2);
+            auto roi_downright = cv::Rect(kshape[1] / 2, kshape[0] / 2, kshape[1] / 2, kshape[0] / 2);
+            cv::flip(spatial(roi_upleft), spatial(roi_upleft), -1);
+            cv::flip(spatial(roi_upright), spatial(roi_upright), -1);
+            cv::flip(spatial(roi_downleft), spatial(roi_downleft), -1);
+            cv::flip(spatial(roi_downright), spatial(roi_downright), -1);
+            // cv::namedWindow("k_space", cv::WINDOW_NORMAL);
+            // cv::namedWindow("spatial", cv::WINDOW_NORMAL);
+            // cv::imshow("k_space", k_space / 20);
+            // cv::imshow("spatial", spatial);
+            // cv::waitKey(0);
+
+            fs::path kspace_path = save_path / ("Kspace" + std::to_string(readout_id) + ".bin");
+            fs::path spatial_path = save_path / ("Spatial" + std::to_string(readout_id) + ".bin");
+
+            cv::FileStorage fs_kspace(kspace_path.string(), cv::FileStorage::WRITE);
+            cv::FileStorage fs_spatial(spatial_path.string(), cv::FileStorage::WRITE);
+            fs_kspace << "mat" << k_space;
+            fs_spatial << "mat" << spatial;
+
+            readout_id++;
+        }
+        for (int m_idx = 0; m_idx < m_voxels.size(); m_idx++)
+        {
+            M_voxel &m = m_voxels[m_idx];
+            m.free_precess(ts.t - t, Gx, Gy);
+            if (ts.type == PULSE)
+            {
+                if (std::abs(ts.slice_thickness) > 1e-9)
+                {
+                    if (std::abs(m.get_pos()[2]) < ts.slice_thickness / 2)
+                        m.flip(ts.FA);
+                }
+                else
+                {
+                    m.flip(ts.FA);
+                }
+            }
+            if (ts.type == ADC)
+            {
+                if (!ADC_now)
+                {
+                    ADC_now = true;
+                    ADC_counter++;
+                }
+                adc = m.readout();
+                if (ADC_counter % 2)
+                {
+                    k_space_real.at<double>(ts.kx, ts.ky) += adc.Mxy.real();
+                    k_space_imag.at<double>(ts.kx, ts.ky) += adc.Mxy.imag();
+                }
+                else
+                {
+                    k_space_real.at<double>(ts.kx, ts.ky) -= adc.Mxy.real();
+                    k_space_imag.at<double>(ts.kx, ts.ky) -= adc.Mxy.imag();
+                }
+            }
+            else
+                ADC_now = false;
+        }
+        switch (ts.type)
+        {
+        case GX:
+            Gx = ts.G;
+            break;
+        case GY:
+            Gy = ts.G;
+            break;
+        default:
+            break;
+        }
+        t = ts.t;
+    }
 }

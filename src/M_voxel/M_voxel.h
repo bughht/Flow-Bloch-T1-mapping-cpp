@@ -36,6 +36,7 @@ public:
     ~M_voxel();
     void flip(double FA);
     void free_precess(double T, double Gx, double Gy);
+    Vector3d get_pos();
     ADC_args readout();
 };
 

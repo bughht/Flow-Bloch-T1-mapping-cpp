@@ -1,9 +1,12 @@
 #include "SeqLoader.h"
 map<string, TS_type> TS_type_map = {
+    {"NONE", NONE},
     {"PULSE", PULSE},
     {"GX", GX},
     {"GY", GY},
-    {"ADC", ADC}};
+    {"ADC", ADC},
+    {"READOUT_START", READOUT_START},
+    {"READOUT_END", READOUT_END}};
 
 TS::TS()
 {
@@ -61,6 +64,8 @@ void SeqLoader::parse_seq()
             ts_obj.FA = ts["FA"].as<double>();
             if (ts["slice_thickness"].IsDefined())
                 ts_obj.slice_thickness = ts["slice_thickness"].as<double>();
+            else
+                ts_obj.slice_thickness = 0.0;
             break;
         case GX:
             ts_obj.G = ts["G"].as<double>();

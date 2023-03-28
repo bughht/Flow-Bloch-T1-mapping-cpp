@@ -47,6 +47,11 @@ void M_voxel::free_precess(double T, double Gx, double Gy)
     this->M = AB.A * this->M + AB.B;
 }
 
+Vector3d M_voxel::get_pos()
+{
+    return this->pos;
+}
+
 ADC_args M_voxel::readout()
 {
     ADC_args adc(this->M);

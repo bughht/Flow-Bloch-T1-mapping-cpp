@@ -16,7 +16,9 @@ enum TS_type
     PULSE,
     GX,
     GY,
-    ADC
+    ADC,
+    READOUT_START,
+    READOUT_END
 };
 
 struct TS
