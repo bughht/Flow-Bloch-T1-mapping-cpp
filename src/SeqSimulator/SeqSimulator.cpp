@@ -312,13 +312,13 @@ void simulate_volume(vector<TS> seq, vector<M_voxel> m_voxels, vector<int> kshap
                 adc = m.readout();
                 if (ADC_counter % 2)
                 {
-                    k_space_real.at<double>(ts.kx, ts.ky) += adc.Mxy.real();
-                    k_space_imag.at<double>(ts.kx, ts.ky) += adc.Mxy.imag();
+                    k_space_real.at<double>(ts.kx, ts.ky) += adc.Mxy.real() / m_voxels.size();
+                    k_space_imag.at<double>(ts.kx, ts.ky) += adc.Mxy.imag() / m_voxels.size();
                 }
                 else
                 {
-                    k_space_real.at<double>(ts.kx, ts.ky) -= adc.Mxy.real();
-                    k_space_imag.at<double>(ts.kx, ts.ky) -= adc.Mxy.imag();
+                    k_space_real.at<double>(ts.kx, ts.ky) -= adc.Mxy.real() / m_voxels.size();
+                    k_space_imag.at<double>(ts.kx, ts.ky) -= adc.Mxy.imag() / m_voxels.size();
                 }
             }
             else

@@ -51,18 +51,19 @@ int main()
     {
         for (int j = 0; j < 64; j++)
         {
-            for (int k = 0; k < 4; k++)
+            for (int k = 0; k < 64; k++)
             {
-                if (sqrt((i - 32) * (i - 32) + (j - 32) * (j - 32)) < 10)
+                if (sqrt((i - 32) * (i - 32) + (j - 32) * (j - 32) + (k - 32) * (k - 32)) < 10)
                 {
-                    m_list.push_back(M_voxel(1000, 200, Vector3d((i - 32) * ratio, (j - 32) * ratio, (k - 2)), Vector3d(0, 0, 1.0)));
+                    m_list.push_back(M_voxel(1500, 200, Vector3d((i - 32) * ratio, (j - 32) * ratio, (k - 32) * ratio), Vector3d(0, 0, 1.0)));
                 }
                 else
                 {
-                    m_list.push_back(M_voxel(300, 20, Vector3d((i - 32) * ratio, (j - 32) * ratio, (k - 2)), Vector3d(0, 0, 1.0)));
+                    m_list.push_back(M_voxel(600, 100, Vector3d((i - 32) * ratio, (j - 32) * ratio, (k - 32) * ratio), Vector3d(0, 0, 1.0)));
                 }
             }
         }
     }
-    simulate_volume(sq.TS_list, m_list, {64, 64}, "img_MOLLI/533_TR2.8_FA20_FOV320_K64_center_first");
+    // simulate_volume(sq.TS_list, m_list, {64, 64}, "img_MOLLI/533_TR2.8_FA20_FOV320_K64_center_first");
+    simulate_volume(sq.TS_list, m_list, {64, 64}, "img_MOLLI/64x64x64");
 }
