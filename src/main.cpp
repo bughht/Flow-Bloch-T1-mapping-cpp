@@ -4,7 +4,7 @@
 #include <M_voxel.h>
 #include <iostream>
 #include <SeqSimulator.h>
-#include <matplotlibcpp.h>
+// #include <matplotlibcpp.h>
 
 using Eigen::Matrix;
 using Eigen::Matrix3d;
@@ -14,7 +14,7 @@ using std::vector;
 int main()
 {
     // SeqLoader sq("sequences_ssfp/TR2.8_FA10_FOV320_K64.yaml");
-    SeqLoader sq("sequences_MOLLI/MOLLI_533_dt_TR2.8_FA20_FOV320_K64_center_first.yaml");
+    SeqLoader sq("sequences_MOLLI/MOLLI_533_TR2.8_FA20_FOV320_K64_center_first.yaml");
     // SeqLoader sq("sequences_ssfp/TR2.8_FA20_FOV500_K64_center_first.yaml");
     // M_voxel m(1000, 200, Vector3d(90, 90, 0), Vector3d(0, 0, 1));
     // simulate_single(sq.TS_list, m, {128, 128});

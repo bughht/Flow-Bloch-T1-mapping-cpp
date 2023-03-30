@@ -1,9 +1,10 @@
-#include<iostream>
-#include<matplotlibcpp.h>
+#include <iostream>
+// #include<matplotlibcpp.h>
 
-namespace plt = matplotlibcpp;
+// namespace plt = matplotlibcpp;
 
-int main(){
-    plt::plot({1,3,2,4});
-    plt::show();
+int main()
+{
+    //     plt::plot({1,3,2,4});
+    //     plt::show();
 }

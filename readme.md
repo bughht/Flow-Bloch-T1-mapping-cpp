@@ -8,9 +8,9 @@ Transplant from [FLOW-BLOCH-T1-MAPPING](https://github.com/bughht/Flow-Bloch-T1-
 - OpenCV
 - Eigen3
 - Yaml-cpp
-- Python3
+<!-- - Python3
     - numpy
-    - matplotlib
+    - matplotlib -->
 
 
 ## Usage

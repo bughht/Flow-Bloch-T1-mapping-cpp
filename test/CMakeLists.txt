@@ -11,18 +11,17 @@ add_executable(test_bSSFP test_bSSFP.cpp )
 
 target_link_libraries(test_BlochSim BlochSim)
 target_link_libraries(test_yaml SeqLoader)
-target_link_libraries(test_matplotlib
-    PRIVATE
-        ${PYTHON_LIBRARIES}
-        Python3::NumPy
-)
+# target_link_libraries(test_matplotlib
+#         ${Python3_LIBRARIES}
+#         Python3::NumPy
+# )
 target_link_libraries(test_opencv ${OpenCV_LIBS})
 target_link_libraries(test_bSSFP BlochSim)
 target_link_libraries(test_bSSFP SeqLoader)
 target_link_libraries(test_bSSFP M_voxel)
 target_link_libraries(test_bSSFP SeqSimulator)
-target_link_libraries(test_bSSFP 
-    ${PYTHON_LIBRARIES}
-    Python3::NumPy
-)
+# target_link_libraries(test_bSSFP 
+#     ${Python3_LIBRARIES}
+#     Python3::NumPy
+# )
 

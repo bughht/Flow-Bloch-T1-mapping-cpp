@@ -46,13 +46,13 @@ void simulate_single(vector<TS> seq, M_voxel m, vector<int> k_shape)
         Mz_h.push_back(adc.Mz);
     }
 
-    plt::subplot(3, 1, 1);
-    plt::plot(t_readout, Mz_h);
-    plt::subplot(3, 1, 2);
-    plt::plot(t_readout, Mxy_h);
-    plt::subplot(3, 1, 3);
-    plt::plot(t_readout, Phase_h);
-    plt::show();
+    // plt::subplot(3, 1, 1);
+    // plt::plot(t_readout, Mz_h);
+    // plt::subplot(3, 1, 2);
+    // plt::plot(t_readout, Mxy_h);
+    // plt::subplot(3, 1, 3);
+    // plt::plot(t_readout, Phase_h);
+    // plt::show();
 
     cv::Mat k_space_[2] = {k_space_real, k_space_imag};
     cv::Mat spatial_[2] = {spatial_real, spatial_imag};
@@ -178,13 +178,13 @@ void simulate_plane(vector<TS> seq, vector<M_voxel> m_plane, vector<int> k_shape
         Mz_h.push_back(adc.Mz);
     }
 
-    plt::subplot(3, 1, 1);
-    plt::plot(t_readout, Mz_h);
-    plt::subplot(3, 1, 2);
-    plt::plot(t_readout, Mxy_h);
-    plt::subplot(3, 1, 3);
-    plt::plot(t_readout, Phase_h);
-    plt::show();
+    // plt::subplot(3, 1, 1);
+    // plt::plot(t_readout, Mz_h);
+    // plt::subplot(3, 1, 2);
+    // plt::plot(t_readout, Mxy_h);
+    // plt::subplot(3, 1, 3);
+    // plt::plot(t_readout, Phase_h);
+    // plt::show();
 
     cv::Mat k_space_[2] = {k_space_real, k_space_imag};
     cv::Mat spatial_[2] = {spatial_real, spatial_imag};
@@ -286,6 +286,7 @@ void simulate_volume(vector<TS> seq, vector<M_voxel> m_voxels, vector<int> kshap
 
             readout_id++;
         }
+#pragma omp parallel for num_threads(64) shared(m_voxels, kspace_real, kspace_imag, ADC_now)
         for (int m_idx = 0; m_idx < m_voxels.size(); m_idx++)
         {
             M_voxel &m = m_voxels[m_idx];
@@ -312,13 +313,17 @@ void simulate_volume(vector<TS> seq, vector<M_voxel> m_voxels, vector<int> kshap
                 adc = m.readout();
                 if (ADC_counter % 2)
                 {
-                    k_space_real.at<double>(ts.kx, ts.ky) += adc.Mxy.real() / m_voxels.size();
-                    k_space_imag.at<double>(ts.kx, ts.ky) += adc.Mxy.imag() / m_voxels.size();
+#pragma omp atomic update
+                    k_space_real.at<double>(ts.kx, ts.ky) += -adc.Mxy.real() / m_voxels.size();
+#pragma omp atomic update
+                    k_space_imag.at<double>(ts.kx, ts.ky) += -adc.Mxy.imag() / m_voxels.size();
                 }
                 else
                 {
-                    k_space_real.at<double>(ts.kx, ts.ky) -= adc.Mxy.real() / m_voxels.size();
-                    k_space_imag.at<double>(ts.kx, ts.ky) -= adc.Mxy.imag() / m_voxels.size();
+#pragma omp atomic update
+                    k_space_real.at<double>(ts.kx, ts.ky) += -adc.Mxy.real() / m_voxels.size();
+#pragma omp atomic update
+                    k_space_imag.at<double>(ts.kx, ts.ky) += -adc.Mxy.imag() / m_voxels.size();
                 }
             }
             else

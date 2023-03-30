@@ -4,7 +4,7 @@
 #include <M_voxel.h>
 #include <iostream>
 #include <SeqSimulator.h>
-#include <matplotlibcpp.h>
+// #include <matplotlibcpp.h>
 
 using Eigen::Matrix;
 using Eigen::Matrix3d;
