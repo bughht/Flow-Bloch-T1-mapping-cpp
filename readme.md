@@ -23,11 +23,10 @@ mkdir build
 
 ## TODO
 
-[x] Bloch Simulation
-[x] b-SSFP sequence simulation
-[x] MOLLI sequence simulation
-[x] K-space sampling & reconstruction
-[ ] Flow simulation
-[ ] Data Collection & Analysis
-[ ] Paper
+- [x] Bloch Simulation
+- [x] MOLLI sequence simulation
+- [x] K-space sampling & reconstruction
+- [ ] Flow simulation
+- [ ] Data Collection & Analysis
+- [ ] Paper
 
