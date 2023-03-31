@@ -7,8 +7,41 @@
 #include <complex>
 
 using Eigen::Matrix3d;
+using Eigen::Vector2d;
 using Eigen::Vector3d;
 using std::complex;
 using std::vector;
+
+class FlowPhantom
+{
+public:
+    int n_vessel_x;
+    int n_vessel_y;
+    int n_vessel;
+    int vessel_radius;
+    vector<Vector2d> vessel_centers;
+
+    vector<double> T1;
+    vector<double> T2;
+    vector<double> flow_speed;
+
+    vector<double> space;
+
+    vector<M_voxel> voxels;
+    int n_particle;
+
+    FlowPhantom(
+        int n_vessel_x,
+        int n_vessel_y,
+        double vessel_radius,
+        vector<double> T1,
+        vector<double> T2,
+        vector<double> flow_speed,
+        vector<double> space,
+        int n_particle);
+    ~FlowPhantom();
+
+    void vessel_init(void);
+}
 
 #endif
