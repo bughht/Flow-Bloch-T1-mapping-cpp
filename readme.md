@@ -7,10 +7,9 @@ Transplant from [FLOW-BLOCH-T1-MAPPING](https://github.com/bughht/Flow-Bloch-T1-
 - CMake >= 3.0
 - OpenCV
 - Eigen3
-- Yaml-cpp
-<!-- - Python3
-    - numpy
-    - matplotlib -->
+<!-- - Yaml-cpp
+- tqdm-cpp -->
+- OpenMP
 
 
 ## Usage
@@ -19,8 +18,16 @@ Transplant from [FLOW-BLOCH-T1-MAPPING](https://github.com/bughht/Flow-Bloch-T1-
 ./install_requirements.sh
 mkdir build
 ./cmake.sh
+./build_run.sh
 ```
 
 ## TODO
 
-k-space, FLOW simulation
+[x] Bloch Simulation
+[x] b-SSFP sequence simulation
+[x] MOLLI sequence simulation
+[x] K-space sampling & reconstruction
+[ ] Flow simulation
+[ ] Data Collection & Analysis
+[ ] Paper
+
