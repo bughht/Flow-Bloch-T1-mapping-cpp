@@ -13,7 +13,7 @@ TS::TS()
     this->FA = 0;
     this->G = 0;
     this->t = 0;
-    this->slice_thickness = 0;
+    this->slice_thickness = -1;
     this->type = NONE;
 }
 

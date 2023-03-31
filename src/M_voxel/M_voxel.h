@@ -41,6 +41,7 @@ public:
     void update_pos(double dt);
     Vector3d get_pos();
     ADC_args readout();
+    complex<double> adc();
 };
 
 #endif

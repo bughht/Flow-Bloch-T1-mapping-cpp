@@ -63,3 +63,8 @@ ADC_args M_voxel::readout()
     ADC_args adc(this->M);
     return adc;
 }
+
+complex<double> M_voxel::adc()
+{
+    return {this->M(0), this->M(1)};
+}

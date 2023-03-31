@@ -101,3 +101,17 @@ void FlowPhantom::flip(double FA, double thickness)
         }
     }
 }
+
+complex<double> FlowPhantom::adc()
+{
+    complex<double> sum(0, 0);
+
+#pragma omp parallel for num_threads(64) shared(sum)
+    for (M_voxel &particle : this->particles)
+    {
+#pragma omp atomic
+        sum += particle.adc();
+    }
+    // return sum * (1.0 / this->n_particle);
+    return sum;
+}

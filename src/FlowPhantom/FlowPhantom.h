@@ -48,6 +48,8 @@ public:
     void free_precess(double t, double Gx, double Gy);
     void flow(double t);
     void flip(double FA, double thickness);
+
+    complex<double> adc();
 };
 
 #endif

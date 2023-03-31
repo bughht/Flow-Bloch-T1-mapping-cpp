@@ -21,9 +21,14 @@ target_link_libraries(test_bSSFP BlochSim)
 target_link_libraries(test_bSSFP SeqLoader)
 target_link_libraries(test_bSSFP M_voxel)
 target_link_libraries(test_bSSFP SeqSimulator)
+
+target_link_libraries(test_FlowPhantom ${OpenCV_LIBS})
+target_link_libraries(test_FlowPhantom SeqSimulator)
+target_link_libraries(test_FlowPhantom SeqLoader)
 target_link_libraries(test_FlowPhantom M_voxel)
 target_link_libraries(test_FlowPhantom FlowPhantom)
 target_link_libraries(test_FlowPhantom BlochSim)
+
 # target_link_libraries(test_bSSFP 
 #     ${Python3_LIBRARIES}
 #     Python3::NumPy
