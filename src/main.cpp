@@ -14,7 +14,7 @@ using std::vector;
 int main()
 {
     // SeqLoader sq("sequences_ssfp/TR2.8_FA10_FOV320_K64.yaml");
-    SeqLoader sq("sequences_MOLLI/MOLLI_533_TR2.8_FA20_FOV320_K64_center_first.yaml");
+    SeqLoader sq("sequences_MOLLI/MOLLI_533_TR2.8_FA10_FOV320_K64_center_first.yaml");
     // SeqLoader sq("sequences_ssfp/TR2.8_FA20_FOV500_K64_center_first.yaml");
     // M_voxel m(1000, 200, Vector3d(90, 90, 0), Vector3d(0, 0, 1));
     // simulate_single(sq.TS_list, m, {128, 128});
@@ -53,7 +53,7 @@ int main()
         {
             for (int k = 0; k < 64; k++)
             {
-                if (sqrt((i - 32) * (i - 32) + (j - 32) * (j - 32) + (k - 32) * (k - 32)) < 10)
+                if (sqrt((i - 32) * (i - 32) + (j - 32) * (j - 32) + (k - 16) * (k - 16)) < 10)
                 {
                     m_list.push_back(M_voxel(1500, 200, Vector3d((i - 32) * ratio, (j - 32) * ratio, (k - 32) * ratio), Vector3d(0, 0, 1.0)));
                 }
@@ -65,5 +65,5 @@ int main()
         }
     }
     // simulate_volume(sq.TS_list, m_list, {64, 64}, "img_MOLLI/533_TR2.8_FA20_FOV320_K64_center_first");
-    simulate_volume(sq.TS_list, m_list, {64, 64}, "img_MOLLI/64x64x64");
+    simulate_volume(sq.TS_list, m_list, {64, 64}, "img_MOLLI/533_TR2.8_FA10_FOV320_K64_center_first_64^3_323216");
 }
