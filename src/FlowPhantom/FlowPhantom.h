@@ -4,7 +4,9 @@
 #include <Eigen/Dense>
 #include <M_voxel.h>
 #include <cmath>
+#include <random>
 #include <complex>
+#include <omp.h>
 
 using Eigen::Matrix3d;
 using Eigen::Vector2d;
@@ -27,7 +29,7 @@ public:
 
     vector<double> space;
 
-    vector<M_voxel> voxels;
+    vector<M_voxel> particles;
     int n_particle;
 
     FlowPhantom(
@@ -39,9 +41,13 @@ public:
         vector<double> flow_speed,
         vector<double> space,
         int n_particle);
-    ~FlowPhantom();
 
     void vessel_init(void);
-}
+    void particle_init(void);
+
+    void free_precess(double t, double Gx, double Gy);
+    void flow(double t);
+    void flip(double FA, double thickness);
+};
 
 #endif

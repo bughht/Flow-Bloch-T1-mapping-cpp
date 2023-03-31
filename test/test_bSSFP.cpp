@@ -29,13 +29,15 @@ int main()
             {
                 // for (int sample_idx = -0; sample_idx < 1; sample_idx++)
 
-                m_list.push_back(M_voxel(1000, 50, Vector3d((i - 32) * ratio, (j - 32) * ratio, 0), Vector3d(0, 0, 1.0)));
+                // m_list.push_back(M_voxel(1000, 50, Vector3d((i - 32) * ratio, (j - 32) * ratio, 0), Vector3d(0, 0, 1.0)));
+                m_list.push_back(M_voxel(1000, 100, Vector3d((i - 32) * ratio, (j - 32) * ratio, 0), Vector3d(0, 0, 1.0), Vector3d(0, 0, 0)));
                 // m_list.push_back(
                 //     M_voxel(1000, 200, Vector3d((i - 32 + rand() / RAND_MAX * 2 - 1) * ratio, (j - 32 + rand() / RAND_MAX * 2 - 1) * 2 * ratio, 0), Vector3d(0, 0, 0.9)));
             }
             else
             {
-                m_list.push_back(M_voxel(1000, 50, Vector3d((i - 32) * ratio, (j - 32) * ratio, 0), Vector3d(0, 0, 0.6)));
+                m_list.push_back(M_voxel(600, 100, Vector3d((i - 32) * ratio, (j - 32) * ratio, 0), Vector3d(0, 0, 1.0), Vector3d(0, 0, 0)));
+                // m_list.push_back(M_voxel(1000, 50, Vector3d((i - 32) * ratio, (j - 32) * ratio, 0), Vector3d(0, 0, 0.6)));
                 // m_list.push_back(
                 //     M_voxel(500, 100, Vector3d((i - 32) * ratio, (j - 32) * ratio * 2, 0), Vector3d(0, 0, 0.6)));
                 // m_list.push_back(

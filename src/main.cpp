@@ -55,11 +55,11 @@ int main()
             {
                 if (sqrt((i - 32) * (i - 32) + (j - 32) * (j - 32) + (k - 16) * (k - 16)) < 10)
                 {
-                    m_list.push_back(M_voxel(1500, 200, Vector3d((i - 32) * ratio, (j - 32) * ratio, (k - 32) * ratio), Vector3d(0, 0, 1.0)));
+                    m_list.push_back(M_voxel(1500, 200, Vector3d((i - 32) * ratio, (j - 32) * ratio, (k - 32) * ratio), Vector3d(0, 0, 1.0), Vector3d(0, 0, 0)));
                 }
                 else
                 {
-                    m_list.push_back(M_voxel(600, 100, Vector3d((i - 32) * ratio, (j - 32) * ratio, (k - 32) * ratio), Vector3d(0, 0, 1.0)));
+                    m_list.push_back(M_voxel(600, 100, Vector3d((i - 32) * ratio, (j - 32) * ratio, (k - 32) * ratio), Vector3d(0, 0, 1.0), Vector3d(0, 0, 0)));
                 }
             }
         }

@@ -31,11 +31,14 @@ public:
     double T2;
     Vector3d pos;
     Vector3d M;
+    Vector3d flow_speed;
 
-    M_voxel(double T1, double T2, Vector3d pos, Vector3d M);
+    // M_voxel(double T1, double T2, Vector3d pos, Vector3d M, Vector3d speed);
+    M_voxel(double T1, double T2, Vector3d pos, Vector3d M, Vector3d flow_speed);
     ~M_voxel();
     void flip(double FA);
     void free_precess(double T, double Gx, double Gy);
+    void update_pos(double dt);
     Vector3d get_pos();
     ADC_args readout();
 };

@@ -18,12 +18,13 @@ ADC_args::ADC_args(double Mx, double My, double Mz)
     this->phase = arg(Mxy);
 }
 
-M_voxel::M_voxel(double T1, double T2, Vector3d pos = Vector3d(0, 0, 0), Vector3d M = Vector3d(0, 0, 1))
+M_voxel::M_voxel(double T1, double T2, Vector3d pos = Vector3d(0, 0, 0), Vector3d M = Vector3d(0, 0, 1), Vector3d flow_speed = Vector3d(0, 0, 0))
 {
     this->T1 = T1;
     this->T2 = T2;
     this->pos = pos;
     this->M = M;
+    this->flow_speed = flow_speed;
 }
 
 M_voxel::~M_voxel()
@@ -45,6 +46,11 @@ void M_voxel::free_precess(double T, double Gx, double Gy)
     double df = GAMMA * Gx * this->pos(0) + GAMMA * Gy * this->pos(1);
     FP_args AB = freeprecess(T, this->T1, this->T2, df);
     this->M = AB.A * this->M + AB.B;
+}
+
+void M_voxel::update_pos(double dt)
+{
+    this->pos += this->flow_speed * dt;
 }
 
 Vector3d M_voxel::get_pos()

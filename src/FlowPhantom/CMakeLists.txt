@@ -1,4 +1,5 @@
 project(FlowPhantom)
+aux_source_directory(. DIR_LIB_SRCS)
 
 set(SOURCE_FILES FlowPhantom.cpp FlowPhantom.h)
 
