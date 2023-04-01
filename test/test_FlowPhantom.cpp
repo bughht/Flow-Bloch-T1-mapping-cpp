@@ -17,8 +17,8 @@ int main(void)
         (vector<double>){1500., 1300., 1100., 900., 500.},
         (vector<double>){200., 180, 160, 140, 100.},
         (vector<double>){0.0, 0.0, 0.0, 0.0, 0.0},
-        (vector<double>){320., 320., 10.},
-        1000000);
+        (vector<double>){320., 320., 5.},
+        500000);
     simulate_phantom(sq.TS_list, phantom, {64, 64}, "img_MOLLI/Phantom_MOLLI_533_TR2.8_FA10_FOV320_K64_center_first");
 
     // for (M_voxel &m : phantom.particles)

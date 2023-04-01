@@ -30,9 +30,8 @@ void FlowPhantom::vessel_init(void)
         for (int y = 0; y < this->n_vessel_y; y++)
         {
             Vector2d center;
-            center << this->space[0] / (this->n_vessel_x + 1) * (x + 1) - this->space[0] / 2, this->space[1] / (this->n_vessel_y + 1) * (y + 1) - this->space[1] / 2;
+            center << this->space[0] * (2 * x + 1 - this->n_vessel_x) / (2 * this->n_vessel_x), this->space[1] * (2 * y + 1 - this->n_vessel_y) / (2 * this->n_vessel_y);
             this->vessel_centers.push_back(center);
-            std::cout << center << std::endl;
         }
 }
 
