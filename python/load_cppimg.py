@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from ruamel import yaml
 import os
-from MOLLI_fit import MOLLI_fit
+from MOLLI_fit import MF_MAGIR
 
 
 def load_img(path, id):
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     T1_result = np.zeros(MOLLI_readout_img[0].shape)
 
     for x, y in tqdm(np.ndindex(MOLLI_readout_img[0].shape)):
-        T1_star, T1, A, B = MOLLI_fit(
+        T1_star, T1, A, B = MF_MAGIR(
             MOLLI_readout_t, MOLLI_readout_img[:, x, y])
         T1_result[x, y] = T1
 
