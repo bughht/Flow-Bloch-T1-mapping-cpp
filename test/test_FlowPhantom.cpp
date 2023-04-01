@@ -13,12 +13,12 @@ int main(void)
     FlowPhantom phantom(
         2,
         2,
-        10.,
-        (vector<double>){1000., 1000., 1000., 1000., 500.},
-        (vector<double>){200., 200., 200., 200., 200.},
-        (vector<double>){0.1, 0.2, 0.3, 0.4},
-        (vector<double>){220., 220., 220.},
-        10000000);
+        60.,
+        (vector<double>){1500., 1300., 1100., 900., 500.},
+        (vector<double>){200., 180, 160, 140, 100.},
+        (vector<double>){0.0, 0.0, 0.0, 0.0, 0.0},
+        (vector<double>){320., 320., 10.},
+        1000000);
     simulate_phantom(sq.TS_list, phantom, {64, 64}, "img_MOLLI/Phantom_MOLLI_533_TR2.8_FA10_FOV320_K64_center_first");
 
     // for (M_voxel &m : phantom.particles)

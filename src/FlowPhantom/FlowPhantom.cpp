@@ -32,6 +32,7 @@ void FlowPhantom::vessel_init(void)
             Vector2d center;
             center << this->space[0] / (this->n_vessel_x + 1) * (x + 1) - this->space[0] / 2, this->space[1] / (this->n_vessel_y + 1) * (y + 1) - this->space[1] / 2;
             this->vessel_centers.push_back(center);
+            std::cout << center << std::endl;
         }
 }
 
@@ -54,11 +55,14 @@ void FlowPhantom::particle_init(void)
         {
             if ((position.head<2>() - this->vessel_centers[j]).norm() < this->vessel_radius)
             {
+                // std::cout << position[0] << " " << position[1] << " " << (position.head<2>() - this->vessel_centers[j]).norm() << " ";
                 p_T1 = this->T1[j];
                 p_T2 = this->T2[j];
                 p_flow_speed = this->flow_speed[j];
+                break;
             }
         }
+        // std::cout << p_T1 << std::endl;
         M_voxel particle(
             p_T1,
             p_T2,
@@ -66,6 +70,16 @@ void FlowPhantom::particle_init(void)
             Vector3d(0, 0, 1),
             Vector3d(0, 0, p_flow_speed));
         this->particles.push_back(particle);
+    }
+}
+
+void FlowPhantom::show(void)
+{
+    for (M_voxel &particle : this->particles)
+    {
+        std::cout << "POS: [" << particle.pos[0] << " " << particle.pos[1] << " " << particle.pos[2] << "]" << std::endl;
+        std::cout << "T1/T2/Flowspeed: " << particle.T1 << "/" << particle.T2 << "/" << particle.flow_speed[2] << std::endl;
+        std::cout << "M: [" << particle.M[0] << " " << particle.M[1] << " " << particle.M[2] << "]" << std::endl;
     }
 }
 
@@ -85,7 +99,7 @@ void FlowPhantom::flow(double t)
 
 void FlowPhantom::flip(double FA, double thickness)
 {
-    if (thickness == -1)
+    if (thickness == 0)
 #pragma omp parallel for num_threads(64)
         for (M_voxel &particle : this->particles)
         {

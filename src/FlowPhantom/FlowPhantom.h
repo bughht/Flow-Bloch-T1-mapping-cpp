@@ -7,6 +7,7 @@
 #include <random>
 #include <complex>
 #include <omp.h>
+#include <iostream>
 
 using Eigen::Matrix3d;
 using Eigen::Vector2d;
@@ -44,6 +45,7 @@ public:
 
     void vessel_init(void);
     void particle_init(void);
+    void show(void);
 
     void free_precess(double t, double Gx, double Gy);
     void flow(double t);
