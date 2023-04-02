@@ -3,33 +3,30 @@
 #include <Eigen/Dense>
 #include <SeqSimulator.h>
 #include <SeqLoader.h>
+#include <filesystem>
 
 using Eigen::Vector2d;
+using std::string;
 using std::vector;
+namespace fs = std::filesystem;
 
 int main(void)
 {
-    SeqLoader sq("sequences_MOLLI/MOLLI_533_TR2.8_FA10_FOV320_K64_center_first.yaml");
+    SeqLoader sq("sequences_MOLLI/MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_center_first.yaml");
     FlowPhantom phantom(
         2,
         2,
-        60.,
-        (vector<double>){1500., 1300., 1100., 900., 500.},
-        (vector<double>){200., 180, 160, 140, 100.},
-        (vector<double>){0.0, 0.0, 0.0, 0.0, 0.0},
-        (vector<double>){320., 320., 5.},
+        50.,
+        // (vector<double>){1500., 1300., 1100., 900., 500.},
+        (vector<double>){1500., 1500., 1500., 1500., 500.},
+        (vector<double>){200., 200, 200, 200, 50.},
+        (vector<double>){0.000, 0.001, 0.000, 0.000},
+        (vector<double>){256., 256., 8.},
         500000);
-    simulate_phantom(sq.TS_list, phantom, {64, 64}, "img_MOLLI/Phantom_MOLLI_533_TR2.8_FA10_FOV320_K64_center_first");
+    string save_path = "img_MOLLI/Phantom_MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_center_first";
+    if (!fs::exists(save_path))
+        fs::create_directory(save_path);
 
-    // for (M_voxel &m : phantom.particles)
-    // {
-    //     // std::cout << center << std::endl;
-    //     if (m.flow_speed[2] > 0)
-    //         std::cout << m.pos[0] << " " << m.pos[1] << " " << m.pos[2] << " " << m.flow_speed[2] << std::endl;
-    // }
-    // phantom.free_precess(10000, 10, 10);
-    // phantom.flip(90, 10);
-    // // phantom.free_precess(5, 10, 10);
-    // std::cout << phantom.adc() << std::endl;
+    simulate_phantom(sq.TS_list, phantom, {64, 64}, save_path);
     return 0;
 }

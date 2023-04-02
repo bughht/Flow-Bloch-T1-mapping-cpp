@@ -396,6 +396,7 @@ void simulate_phantom(vector<TS> seq, FlowPhantom phantom, vector<int> k_shape, 
             fs_spatial << "mat" << spatial;
             readout_id++;
         }
+        phantom.flow(ts.t - t);
         phantom.free_precess(ts.t - t, Gx, Gy);
         if (ts.type == PULSE)
             phantom.flip(ts.FA, ts.slice_thickness);

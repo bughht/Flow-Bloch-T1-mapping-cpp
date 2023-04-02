@@ -1,3 +1,4 @@
 /.vscode
 /Downloads
 /build
+*/__pycache__
