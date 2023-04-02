@@ -3,6 +3,7 @@
 
 #include <Eigen/Dense>
 #include <M_voxel.h>
+#include <SeqLoader.h>
 #include <cmath>
 #include <random>
 #include <complex>
@@ -50,6 +51,7 @@ public:
     void free_precess(double t, double Gx, double Gy);
     void flow(double t);
     void flip(double FA, double thickness);
+    void update_pos(vector<TS> &flip_global, double t_now);
 
     complex<double> adc();
 };

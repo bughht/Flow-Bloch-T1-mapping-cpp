@@ -115,6 +115,27 @@ void FlowPhantom::flip(double FA, double thickness)
     }
 }
 
+void FlowPhantom::update_pos(vector<TS> &flip_global, double t_now)
+{
+#pragma omp parallel for num_threads(64)
+    for (M_voxel &particle : this->particles)
+    {
+        if (particle.pos[2] > this->space[2] / 2)
+        {
+            double t_particle = 0;
+            particle.pos[2] -= this->space[2];
+            particle.M = Vector3d(0, 0, 1);
+            for (TS &flip : flip_global)
+            {
+                particle.free_precess(flip.t - t_particle, 0, 0);
+                particle.flip(flip.FA);
+                t_particle = flip.t;
+            }
+            particle.free_precess(t_now - t_particle, 0, 0);
+        }
+    }
+}
+
 complex<double> FlowPhantom::adc()
 {
     complex<double> sum(0, 0);

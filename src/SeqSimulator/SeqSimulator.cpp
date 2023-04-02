@@ -348,6 +348,7 @@ void simulate_phantom(vector<TS> seq, FlowPhantom phantom, vector<int> k_shape, 
 {
     double t = 0;
     double Gx = 0, Gy = 0;
+    vector<TS> flip_global_history;
 
     cv::Mat k_space_real = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
     cv::Mat k_space_imag = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
@@ -400,6 +401,8 @@ void simulate_phantom(vector<TS> seq, FlowPhantom phantom, vector<int> k_shape, 
         phantom.free_precess(ts.t - t, Gx, Gy);
         if (ts.type == PULSE)
             phantom.flip(ts.FA, ts.slice_thickness);
+        if (ts.slice_thickness == 0)
+            flip_global_history.push_back(ts);
         if (ts.type == ADC)
         {
             if (!ADC_now)
@@ -425,6 +428,7 @@ void simulate_phantom(vector<TS> seq, FlowPhantom phantom, vector<int> k_shape, 
             Gx = ts.G;
         if (ts.type == GY)
             Gy = ts.G;
+        phantom.update_pos(flip_global_history, ts.t);
         t = ts.t;
     }
 }
