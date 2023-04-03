@@ -21,7 +21,7 @@ class bSSFP:
         self.TR, self.FA, self.FOV, self.k_shape, self.slice_thickness, self.k_center_first, self.sign_alter, self.preparation = TR, FA, np.array(
             FOV), np.array(
                 k_shape
-        ), slice_thickness, k_center_first, sign_alter, preparation
+            ), slice_thickness, k_center_first, sign_alter, preparation
         self.data_process()
 
     def data_process(self):
@@ -107,6 +107,7 @@ class bSSFP:
                 "t": 0,
                 "type": "PULSE",
                 "FA": self.FA / 2,
+                "slice_thickness": self.slice_thickness
             })
         if not self.k_center_first:
             self.readout_kY_idx = range(self.NFlip)

@@ -428,7 +428,7 @@ void simulate_phantom(vector<TS> seq, FlowPhantom phantom, vector<int> k_shape, 
             Gx = ts.G;
         if (ts.type == GY)
             Gy = ts.G;
-        phantom.update_pos(flip_global_history, ts.t);
+        phantom.update_outofrange(flip_global_history, ts.t);
         t = ts.t;
     }
 }

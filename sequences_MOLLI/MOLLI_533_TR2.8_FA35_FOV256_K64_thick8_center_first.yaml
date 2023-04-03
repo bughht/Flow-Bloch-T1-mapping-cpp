@@ -4,6 +4,7 @@
 - t: 100.0
   type: READOUT_START
 - FA: 17.5
+  slice_thickness: 8
   t: 100.0
   type: PULSE
 - FA: -35.0
@@ -18187,6 +18188,7 @@
 - t: 1100.0
   type: READOUT_START
 - FA: 17.5
+  slice_thickness: 8
   t: 1100.0
   type: PULSE
 - FA: -35.0
@@ -36370,6 +36372,7 @@
 - t: 2100.0
   type: READOUT_START
 - FA: 17.5
+  slice_thickness: 8
   t: 2100.0
   type: PULSE
 - FA: -35.0
@@ -54553,6 +54556,7 @@
 - t: 3100.0
   type: READOUT_START
 - FA: 17.5
+  slice_thickness: 8
   t: 3100.0
   type: PULSE
 - FA: -35.0
@@ -72736,6 +72740,7 @@
 - t: 4100.0
   type: READOUT_START
 - FA: 17.5
+  slice_thickness: 8
   t: 4100.0
   type: PULSE
 - FA: -35.0
@@ -90922,6 +90927,7 @@
 - t: 8200.0
   type: READOUT_START
 - FA: 17.5
+  slice_thickness: 8
   t: 8200.0
   type: PULSE
 - FA: -35.0
@@ -109105,6 +109111,7 @@
 - t: 9200.0
   type: READOUT_START
 - FA: 17.5
+  slice_thickness: 8
   t: 9200.0
   type: PULSE
 - FA: -35.0
@@ -127288,6 +127295,7 @@
 - t: 10200.0
   type: READOUT_START
 - FA: 17.5
+  slice_thickness: 8
   t: 10200.0
   type: PULSE
 - FA: -35.0

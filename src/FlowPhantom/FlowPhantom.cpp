@@ -115,7 +115,7 @@ void FlowPhantom::flip(double FA, double thickness)
     }
 }
 
-void FlowPhantom::update_pos(vector<TS> &flip_global, double t_now)
+void FlowPhantom::update_outofrange(vector<TS> &flip_global, double t_now)
 {
 #pragma omp parallel for num_threads(64)
     for (M_voxel &particle : this->particles)
