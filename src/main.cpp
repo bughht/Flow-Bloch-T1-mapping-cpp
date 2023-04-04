@@ -34,7 +34,7 @@ int main(int argc, char **argv)
         .scan<'g', double>();
     program.add_argument("-N", "--n_particle")
         .help("number of particles")
-        .default_value(5000000)
+        .default_value(500000000)
         .scan<'d', int>();
     program.add_argument("--T1_Blood")
         .help("T1 of blood")
