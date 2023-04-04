@@ -2,3 +2,5 @@
 /Downloads
 /build
 */__pycache__
+nohup.out
+*/nohup.out
