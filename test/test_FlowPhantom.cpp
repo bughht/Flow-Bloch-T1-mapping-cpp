@@ -4,6 +4,7 @@
 #include <SeqSimulator.h>
 #include <SeqLoader.h>
 #include <filesystem>
+#include <cassert>
 #include "argparse.hpp"
 
 using Eigen::Vector2d;
@@ -13,23 +14,6 @@ namespace fs = std::filesystem;
 
 int main(int argc, char **argv)
 {
-    argparse::ArgumentParser program("test_FlowPhantom");
-    program.add_argument("-s", "--save_path")
-        .help("save path")
-        .default_value(string("img_MOLLI/Phantom_MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_center_first"));
-    program.add_argument("--n_particle")
-        .help("number of particles")
-        .default_value(5000000);
-    program.add_argument("--n_vessel_xy")
-        .help("number of vessels in x and y direction")
-        .default_value(2);
-    program.add_argument("--T1_Blood")
-        .help("T1 of blood")
-        .default_value(1500.);
-    program.add_argument("--T2_Blood")
-        .help("T2 of blood")
-        .default_value(200.);
-
     SeqLoader sq("sequences_MOLLI/MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_center_first.yaml");
     FlowPhantom phantom(
         2,

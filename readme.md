@@ -5,17 +5,16 @@ Transplant from [FLOW-BLOCH-T1-MAPPING](https://github.com/bughht/Flow-Bloch-T1-
 ## Requirements
 
 - CMake >= 3.0
+- C++ >= 17
 - OpenCV
 - Eigen3
+- OpenMP
 <!-- - Yaml-cpp
 - tqdm-cpp -->
-- OpenMP
-
 
 ## Usage
 
 ```bash
-./install_requirements.sh
 mkdir build
 ./cmake.sh
 ./build_run.sh

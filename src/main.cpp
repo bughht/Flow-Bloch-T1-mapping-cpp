@@ -1,9 +1,12 @@
 #include <cmath>
+#include <cassert>
+#include <iostream>
 #include <BlochSim.h>
 #include <Eigen/Dense>
 #include <M_voxel.h>
 #include <iostream>
 #include <SeqSimulator.h>
+#include "argparse.hpp"
 // #include <matplotlibcpp.h>
 
 using Eigen::Matrix;
@@ -11,59 +14,110 @@ using Eigen::Matrix3d;
 using Eigen::Vector3d;
 using std::vector;
 
-int main()
+int main(int argc, char **argv)
 {
-    // SeqLoader sq("sequences_ssfp/TR2.8_FA10_FOV320_K64.yaml");
-    SeqLoader sq("sequences_MOLLI/MOLLI_533_TR2.8_FA10_FOV320_K64_center_first.yaml");
-    // SeqLoader sq("sequences_ssfp/TR2.8_FA20_FOV500_K64_center_first.yaml");
-    // M_voxel m(1000, 200, Vector3d(90, 90, 0), Vector3d(0, 0, 1));
-    // simulate_single(sq.TS_list, m, {128, 128});
+    argparse::ArgumentParser program("test_FlowPhantom");
+    program.add_argument("-seq", "--seq_path")
+        .help("sequence path")
+        .default_value(string("sequences_MOLLI/MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_center_first.yaml"));
+    program.add_argument("-s", "--save_path")
+        .help("save path")
+        .default_value(string("img_MOLLI/Phantom_MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_center_first"));
+    program.add_argument("-n", "--n_vessel_xy")
+        .help("number of vessels in x and y direction")
+        .nargs(2)
+        .default_value(vector<int>{2, 2})
+        .scan<'d', int>();
+    program.add_argument("-r", "--vessel_radius")
+        .help("radius of vessel")
+        .default_value(60.)
+        .scan<'g', double>();
+    program.add_argument("-N", "--n_particle")
+        .help("number of particles")
+        .default_value(5000000)
+        .scan<'d', int>();
+    program.add_argument("--T1_Blood")
+        .help("T1 of blood")
+        .default_value(vector<double>{1500., 1500., 1500., 1500.})
+        .nargs(argparse::nargs_pattern::any)
+        .scan<'g', double>();
+    program.add_argument("--T2_Blood")
+        .help("T2 of blood")
+        .default_value(vector<double>{200., 200, 200, 200})
+        .nargs(argparse::nargs_pattern::any)
+        .scan<'g', double>();
+    program.add_argument("--T1_Tissue")
+        .help("T1 of tissue")
+        .default_value(500.)
+        .scan<'g', double>();
+    program.add_argument("--T2_Tissue")
+        .help("T2 of tissue")
+        .default_value(100.)
+        .scan<'g', double>();
+    program.add_argument("--flow_speed")
+        .help("flow speed")
+        .default_value(vector<double>{0.0, 0.1, 0.2, 0.3})
+        .nargs(argparse::nargs_pattern::any)
+        .scan<'g', double>();
+    program.add_argument("--space")
+        .help("simulation space")
+        .default_value(vector<double>{256., 256., 64.})
+        .nargs(argparse::nargs_pattern::any)
+        .scan<'g', double>();
 
-    // double ratio = 320.0 / 64;
-    // vector<M_voxel> m_list;
-    // for (int i = 0; i < 64; i++)
-    // {
-    //     for (int j = 0; j < 64; j++)
-    //     {
-    //         if (sqrt((i - 16) * (i - 16) + (j - 36) * (j - 36)) < 10)
-    //         // if ((fabs(i - 32) < 16 && fabs(j - 32) < 16))
-    //         {
-    //             // for (int sample_idx = -0; sample_idx < 1; sample_idx++)
-
-    //             m_list.push_back(M_voxel(1000, 50, Vector3d((i - 32) * ratio, (j - 32) * ratio, 0), Vector3d(0, 0, 1.0)));
-    //             // m_list.push_back(
-    //             //     M_voxel(1000, 200, Vector3d((i - 32 + rand() / RAND_MAX * 2 - 1) * ratio, (j - 32 + rand() / RAND_MAX * 2 - 1) * 2 * ratio, 0), Vector3d(0, 0, 0.9)));
-    //         }
-    //         else
-    //         {
-    //             m_list.push_back(M_voxel(1000, 50, Vector3d((i - 32) * ratio, (j - 32) * ratio, 0), Vector3d(0, 0, 0.6)));
-    //             // m_list.push_back(
-    //             //     M_voxel(500, 100, Vector3d((i - 32) * ratio, (j - 32) * ratio * 2, 0), Vector3d(0, 0, 0.6)));
-    //             // m_list.push_back(
-    //             //     M_voxel(1000, 200, Vector3d(i * 5, j * 5, 0), Vector3d(0, 0, 1)));
-    //         }
-    //     }
-    // }
-    // simulate_plane(sq.TS_list, m_list, {64, 64});
-    double ratio = 320.0 / 64;
-    vector<M_voxel> m_list;
-    for (int i = 0; i < 64; i++)
+    try
     {
-        for (int j = 0; j < 64; j++)
-        {
-            for (int k = 0; k < 64; k++)
-            {
-                if (sqrt((i - 32) * (i - 32) + (j - 32) * (j - 32) + (k - 16) * (k - 16)) < 10)
-                {
-                    m_list.push_back(M_voxel(1500, 200, Vector3d((i - 32) * ratio, (j - 32) * ratio, (k - 32) * ratio), Vector3d(0, 0, 1.0), Vector3d(0, 0, 0)));
-                }
-                else
-                {
-                    m_list.push_back(M_voxel(600, 100, Vector3d((i - 32) * ratio, (j - 32) * ratio, (k - 32) * ratio), Vector3d(0, 0, 1.0), Vector3d(0, 0, 0)));
-                }
-            }
-        }
+        program.parse_args(argc, argv);
+        assert(program.get<vector<double>>("--T1_Blood").size() == program.get<vector<int>>("--n_vessel_xy")[0] * program.get<vector<int>>("--n_vessel_xy")[1]);
+        assert(program.get<vector<double>>("--T2_Blood").size() == program.get<vector<int>>("--n_vessel_xy")[0] * program.get<vector<int>>("--n_vessel_xy")[1]);
+        assert(program.get<vector<double>>("--flow_speed").size() == program.get<vector<int>>("--n_vessel_xy")[0] * program.get<vector<int>>("--n_vessel_xy")[1]);
+        assert(program.get<double>("--vessel_radius") > 0);
+        assert(program.get<double>("--vessel_radius") < program.get<vector<double>>("--space")[0] / program.get<vector<int>>("--n_vessel_xy")[0]);
+        assert(program.get<double>("--vessel_radius") < program.get<vector<double>>("--space")[1] / program.get<vector<int>>("--n_vessel_xy")[1]);
     }
-    // simulate_volume(sq.TS_list, m_list, {64, 64}, "img_MOLLI/533_TR2.8_FA20_FOV320_K64_center_first");
-    simulate_volume(sq.TS_list, m_list, {64, 64}, "img_MOLLI/533_TR2.8_FA10_FOV320_K64_center_first_64^3_323216");
+    catch (const std::runtime_error &err)
+    {
+        std::cerr << err.what() << std::endl;
+        std::cerr << program;
+        std::exit(1);
+    }
+    string seq_path = program.get<string>("--seq_path");
+    string save_path = program.get<string>("--save_path");
+    vector<int> n_vessel_xy = program.get<vector<int>>("--n_vessel_xy");
+    double vessel_radius = program.get<double>("--vessel_radius");
+    int n_particle = program.get<int>("--n_particle");
+    vector<double> T1 = program.get<vector<double>>("--T1_Blood");
+    vector<double> T2 = program.get<vector<double>>("--T2_Blood");
+    double T1_Tissue = program.get<double>("--T1_Tissue");
+    double T2_Tissue = program.get<double>("--T2_Tissue");
+    T1.push_back(T1_Tissue);
+    T2.push_back(T2_Tissue);
+    vector<double> flow_speed = program.get<vector<double>>("--flow_speed");
+    vector<double> space = program.get<vector<double>>("--space");
+    std::cout << program.get<string>("--save_path") << std::endl;
+
+    if (!fs::exists(save_path))
+        fs::create_directory(save_path);
+
+    SeqLoader sq(seq_path);
+    FlowPhantom phantom(
+        n_vessel_xy[0],
+        n_vessel_xy[1],
+        vessel_radius,
+        T1,
+        T2,
+        flow_speed,
+        space,
+        n_particle);
+
+    simulate_phantom(sq.TS_list, phantom, {64, 64}, save_path);
+    // std::cout << program.get<vector<int>>("--n_vessel_xy")[0] << program.get<vector<int>>("--n_vessel_xy")[1] << std::endl;
+    // std::cout << program.get<double>("--vessel_radius") << std::endl;
+    // std::cout << program.get<vector<double>>("--T1_Blood")[0] << std::endl;
+    // std::cout << program.get<vector<double>>("--T2_Blood")[0] << std::endl;
+    // std::cout << program.get<double>("--T1_Tissue") << std::endl;
+    // std::cout << program.get<double>("--T2_Tissue") << std::endl;
+    // std::cout << program.get<vector<double>>("--flow_speed")[0] << std::endl;
+    // std::cout << program.get<vector<double>>("--space")[0] << std::endl;
+    // std::cout << program.get<int>("--n_particle") << std::endl;
 }
