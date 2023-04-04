@@ -11,7 +11,7 @@ This is a C++ implementation of the Bloch simulator for T1 mapping. It includes 
 - Flow phantom simulation
 - T1 fitting
 
-This is a standalone project originally transplanted from [FLOW-BLOCH-T1-MAPPING](https://github.com/bughht/Flow-Bloch-T1-mapping). 
+This project was originally transplanted from [FLOW-BLOCH-T1-MAPPING](https://github.com/bughht/Flow-Bloch-T1-mapping) for higher simulation performance. Now it's a standalone project.
 
 
 
