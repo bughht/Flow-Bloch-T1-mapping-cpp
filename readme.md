@@ -112,3 +112,6 @@ python run.py
 - [ ] Data Collection & Analysis
 - [ ] Paper
 
+## License
+
+The project Flow-Bloch-T1-mapping-cpp is available under the [MIT license](https://github.com/bughht/Flow-Bloch-T1-mapping-cpp/blob/master/LICENSE).
