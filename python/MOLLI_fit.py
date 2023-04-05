@@ -17,7 +17,7 @@ def MAGIR(t, Mz):
         # return A-B*np.exp(-t/T1)
         return np.abs(A - B * np.exp(-t / T1))
 
-    params = curve_fit(T1_curve, t, Mz, p0=[1, 100, 100], maxfev=int(1e10))
+    params = curve_fit(T1_curve, t, Mz, p0=[1, 100, 100], maxfev=int(1e8))
     [T1_star, A, B] = params[0]
     T1 = (B / A - 1) * T1_star
     return T1_star, T1, A, B
@@ -40,7 +40,7 @@ def MF_MAGIR(t, Mz):
                                  t,
                                  Mz_local,
                                  p0=[1, 100, 100],
-                                 maxfev=int(1e10),
+                                 maxfev=int(1e8),
                                  check_finite=False)
         #  1, 5, 5], bounds=([0, -10, -10], [10, 10, 10]), maxfev=int(1e5))
         popts.append(p_opt)
