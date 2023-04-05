@@ -2,6 +2,7 @@ from subprocess import run
 from multiprocessing import Process
 import numpy as np
 
+run("rm -rf nohup.out",shell=True)
 run("build/src/T1-Mapping -h", shell=True)
 
 # T1_Blood = np.arange(1400, 2001, 100).tolist()
@@ -16,12 +17,15 @@ n_vessel_y = 4
 
 vessel_radius = 25
 
-n_particle = 100000000
+n_particle = 10000000
 
 seq_path = "sequences_MOLLI/MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_center_first.yaml"
 
 flow_speed_fast = np.linspace(0, 1, 16).astype(str)
 flow_speed_slow = np.linspace(0, 0.01, 16).astype(str)
+
+space = [256,256,256]
+_space = [str(S) for S in space]
 
 
 def execute_cmd(cmd):
@@ -37,14 +41,14 @@ for exp_idx, T1 in enumerate(T1_Blood):
 
     save_path_slow = "exp_result/ID{}_T1{}_slow".format(exp_idx, T1)
     save_path_fast = "exp_result/ID{}_T1{}_fast".format(exp_idx, T1)
-    execute_cmd_slow = "build/src/T1-Mapping --T1_Blood {} --T2_Blood {} --T1_Tissue {} --T2_Tissue {} --n_vessel_xy {} {} --vessel_radius {} --n_particle {} --seq_path {} --save_path {} --flow_speed {} ".format(
+    execute_cmd_slow = "build/src/T1-Mapping --T1_Blood {} --T2_Blood {} --T1_Tissue {} --T2_Tissue {} --n_vessel_xy {} {} --vessel_radius {} --n_particle {} --seq_path {} --save_path {} --flow_speed {} --space {}".format(
         " ".join(_T1_blood), " ".join(_T2_blood), _T1_tissue, _T2_tissue,
         n_vessel_x, n_vessel_y, vessel_radius, n_particle, seq_path,
-        save_path_slow, " ".join(flow_speed_slow))
-    execute_cmd_fast = "build/src/T1-Mapping --T1_Blood {} --T2_Blood {} --T1_Tissue {} --T2_Tissue {} --n_vessel_xy {} {} --vessel_radius {} --n_particle {} --seq_path {} --save_path {} --flow_speed {} ".format(
+        save_path_slow, " ".join(flow_speed_slow)," ".join(_space))
+    execute_cmd_fast = "build/src/T1-Mapping --T1_Blood {} --T2_Blood {} --T1_Tissue {} --T2_Tissue {} --n_vessel_xy {} {} --vessel_radius {} --n_particle {} --seq_path {} --save_path {} --flow_speed {} --space {}".format(
         " ".join(_T1_blood), " ".join(_T2_blood), _T1_tissue, _T2_tissue,
         n_vessel_x, n_vessel_y, vessel_radius, n_particle, seq_path,
-        save_path_fast, " ".join(flow_speed_fast))
+        save_path_fast, " ".join(flow_speed_fast)," ".join(_space))
     p_slow = Process(target=execute_cmd, args=(execute_cmd_slow, ))
     p_fast = Process(target=execute_cmd, args=(execute_cmd_fast, ))
     p_slow.start()
