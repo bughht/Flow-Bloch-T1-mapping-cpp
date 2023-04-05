@@ -11,8 +11,7 @@ This is a C++ implementation of the Bloch simulator for T1 mapping. It includes 
 - Flow phantom simulation
 - T1 fitting
 
-This project was originally transplanted from [FLOW-BLOCH-T1-MAPPING](https://github.com/bughht/Flow-Bloch-T1-mapping) for higher simulation performance. Now it's a standalone project.
-
+This project was originally transplanted from [FLOW-BLOCH-T1-MAPPING](https://github.com/bughht/Flow-Bloch-T1-mapping) for higher performance. Now it's a standalone project.
 
 
 ## Project Structure
@@ -34,72 +33,29 @@ This project was originally transplanted from [FLOW-BLOCH-T1-MAPPING](https://gi
 - `build` is the build directory, executables will be generated here.
 - `run.py` enables parallel execution of the simulator, temporarly for experiments.
 
-```bash
-FLOW-BLOCH-T1-MAPPING-CPP
-├── build.sh
-├── build_run.sh
-├── build
-│   ├── ...
-├── cmake.sh
-├── include
-│   ├── argparse.hpp
-│   └── tqdm.hpp
-├── install_requirements.sh
-├── python
-│   ├── GenSeq_MOLLI.py
-│   ├── GenSeq_SSFP.py
-│   ├── load_cppimg.py
-│   ├── MOLLI_fit.py
-│   └── T1_fit.ipynb
-├── run.py
-├── src
-│   ├── BlochSim
-│   │   ├── BlochSim.cpp
-│   │   ├── BlochSim.h
-│   │   └── CMakeLists.txt
-│   ├── CMakeLists.txt
-│   ├── FlowPhantom
-│   │   ├── CMakeLists.txt
-│   │   ├── FlowPhantom.cpp
-│   │   └── FlowPhantom.h
-│   ├── main.cpp
-│   ├── M_voxel
-│   │   ├── CMakeLists.txt
-│   │   ├── M_voxel.cpp
-│   │   └── M_voxel.h
-│   ├── SeqLoader
-│   │   ├── CMakeLists.txt
-│   │   ├── SeqLoader.cpp
-│   │   └── SeqLoader.h
-│   └── SeqSimulator
-│       ├── CMakeLists.txt
-│       ├── SeqSimulator.cpp
-│       └── SeqSimulator.h
-└── test
-    ├── CMakeLists.txt
-    ├── test_BlochSim.cpp
-    ├── test_bSSFP.cpp
-    ├── test_FlowPhantom.cpp
-    ├── test_matplotlib.cpp
-    ├── test_opencv.cpp
-    └── test_yaml.cpp
-```
+## Features
 
-## Requirements
+- Sequence generator and T1-fitting are implemented in **Python** with **Numpy** and **Scipy**. 
+- The sequence simulator is implemented in **C++** for higher performance.
+- Matrix computation in Bloch simulation is accelerated by **Eigen3**.
+- Parallel computation in k-space sampling and flow phantom simulation is accelerated by **OpenMP**.
+- **OpenCV** is used for MRI image reconstruction. 
+
+## Prerequisites
 
 - CMake >= 3.0
 - C++ >= 17
 - OpenCV
 - Eigen3
 - OpenMP
-<!-- - Yaml-cpp
-- tqdm-cpp -->
 
-## Usage
+## Build and Run
 
 ```bash
 mkdir build
 ./cmake.sh
+# Please set the parameters in run.py first.
+# The default parameters are designed for experiments server with at least 32 processors and 64GB memory.
 python run.py
 ```
 
@@ -112,6 +68,20 @@ python run.py
 - [ ] Data Collection & Analysis
 - [ ] Paper
 
-## License
+## License: [GPL-2.0](LICENSE)
 
-The project Flow-Bloch-T1-mapping-cpp is available under the [MIT license](https://github.com/bughht/Flow-Bloch-T1-mapping-cpp/blob/master/LICENSE).
+    Copyright (C) 2023  Haotian Hong
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
