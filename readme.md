@@ -70,6 +70,7 @@ python run.py
 
 ## License: [GPL-2.0](LICENSE)
 
+    FLOW-BLOCH-T1-MAPPING
     Copyright (C) 2023  Haotian Hong
 
     This program is free software; you can redistribute it and/or modify
