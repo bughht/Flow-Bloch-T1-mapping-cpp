@@ -23,6 +23,7 @@ target_link_libraries(T1-Mapping SeqLoader)
 target_link_libraries(T1-Mapping M_voxel)
 target_link_libraries(T1-Mapping SeqSimulator)
 target_link_libraries(T1-Mapping FlowPhantom)
+target_link_libraries(T1-Mapping OpenMP::OpenMP_CXX)
 # target_link_libraries(T1-Mapping 
 #     ${Python3_LIBRARIES}
 #     Python3::NumPy
