@@ -17,6 +17,8 @@
 
 #include "FlowPhantom.h"
 
+#define PARALLEL_THREAD 32
+
 FlowPhantom::FlowPhantom(
     int n_vessel_x,
     int n_vessel_y,
@@ -101,14 +103,14 @@ void FlowPhantom::show(void)
 
 void FlowPhantom::free_precess(double t, double Gx, double Gy)
 {
-#pragma omp parallel for num_threads(64)
+#pragma omp parallel for num_threads(PARALLEL_THREAD)
     for (M_voxel &particle : this->particles)
         particle.free_precess(t, Gx, Gy);
 }
 
 void FlowPhantom::flow(double t)
 {
-#pragma omp parallel for num_threads(64)
+#pragma omp parallel for num_threads(PARALLEL_THREAD)
     for (M_voxel &particle : this->particles)
         particle.update_pos(t);
 }
@@ -116,14 +118,14 @@ void FlowPhantom::flow(double t)
 void FlowPhantom::flip(double FA, double thickness)
 {
     if (thickness == 0)
-#pragma omp parallel for num_threads(64)
+#pragma omp parallel for num_threads(PARALLEL_THREAD)
         for (M_voxel &particle : this->particles)
         {
             particle.flip(FA);
         }
     else
     {
-#pragma omp parallel for num_threads(64)
+#pragma omp parallel for num_threads(PARALLEL_THREAD)
         for (M_voxel &particle : this->particles)
         {
             if (fabs(particle.pos[2]) < thickness / 2)
@@ -134,7 +136,7 @@ void FlowPhantom::flip(double FA, double thickness)
 
 void FlowPhantom::update_outofrange(vector<TS> &flip_global, double t_now)
 {
-#pragma omp parallel for num_threads(64)
+#pragma omp parallel for num_threads(PARALLEL_THREAD)
     for (M_voxel &particle : this->particles)
     {
         if (particle.pos[2] > this->space[2] / 2)
@@ -155,14 +157,21 @@ void FlowPhantom::update_outofrange(vector<TS> &flip_global, double t_now)
 
 complex<double> FlowPhantom::adc()
 {
-    complex<double> sum(0, 0);
+    // complex<double> sum(0, 0);
+    double sum_r = 0, sum_i = 0;
 
-#pragma omp parallel for num_threads(64) shared(sum)
+// #pragma omp parallel for num_threads(32) shared(sum)
+#pragma omp parallel for reduction(+                    \
+                                   : sum_i) reduction(+ \
+                                                      : sum_r) num_threads(32)
     for (M_voxel &particle : this->particles)
     {
-#pragma omp atomic
-        sum += particle.adc();
+        // #pragma omp atomic
+        // sum += particle.adc();
+        sum_r += particle.adc().real();
+        sum_i += particle.adc().imag();
     }
     // return sum * (1.0 / this->n_particle);
-    return sum;
+    return complex<double>(sum_r, sum_i);
+    // return sum;
 }

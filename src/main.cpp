@@ -51,7 +51,7 @@ int main(int argc, char **argv)
         .scan<'g', double>();
     program.add_argument("-N", "--n_particle")
         .help("number of particles")
-        .default_value(500000)
+        .default_value(5000000)
         .scan<'d', int>();
     program.add_argument("--T1_Blood")
         .help("T1 of blood")
@@ -73,7 +73,7 @@ int main(int argc, char **argv)
         .scan<'g', double>();
     program.add_argument("--flow_speed")
         .help("flow speed")
-        .default_value(vector<double>{0.0, 0.1, 0.2, 0.3})
+        .default_value(vector<double>{0.0, 0.001, 0.002, 0.003})
         .nargs(argparse::nargs_pattern::any)
         .scan<'g', double>();
     program.add_argument("--space")

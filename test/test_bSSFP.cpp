@@ -62,5 +62,5 @@ int main()
             }
         }
     }
-    simulate_plane(sq.TS_list, m_list, {64, 64});
+    // simulate_plane(sq.TS_list, m_list, {64, 64});
 }
