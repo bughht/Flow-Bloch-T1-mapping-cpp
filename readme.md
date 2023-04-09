@@ -44,10 +44,18 @@ This project was originally transplanted from [FLOW-BLOCH-T1-MAPPING](https://gi
 ## Prerequisites
 
 - CMake >= 3.0
-- C++ >= 17
-- OpenCV
-- Eigen3
-- OpenMP
+    - OpenCV
+    - Eigen3
+    - OpenMP >= 4.5.0
+- Python >= 3.7
+    - numpy
+    - scipy
+    - matplotlib
+    - pyyaml
+    - ruamel.yaml
+    - tqdm
+    - ipynbcompress (Please build from [personal manipulated source](https://github.com/bughht/ipynbcompress-plus))
+
 
 ## Build and Run
 
