@@ -126,7 +126,6 @@ int main(int argc, char **argv)
         flow_speed,
         space,
         n_particle);
-
     simulate_phantom(sq.TS_list, phantom, {64, 64}, save_path);
     // std::cout << program.get<vector<int>>("--n_vessel_xy")[0] << program.get<vector<int>>("--n_vessel_xy")[1] << std::endl;
     // std::cout << program.get<double>("--vessel_radius") << std::endl;

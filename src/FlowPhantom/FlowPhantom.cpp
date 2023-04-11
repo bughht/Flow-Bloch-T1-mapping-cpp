@@ -142,7 +142,9 @@ void FlowPhantom::update_outofrange(vector<TS> &flip_global, double t_now)
         if (particle.pos[2] > this->space[2] / 2)
         {
             double t_particle = 0;
+            std::cout << particle.pos[2] << " ";
             particle.pos[2] -= this->space[2];
+            std::cout << particle.pos[2] << " ";
             particle.M = Vector3d(0, 0, 1);
             for (TS &flip : flip_global)
             {
