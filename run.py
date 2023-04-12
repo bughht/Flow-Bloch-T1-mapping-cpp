@@ -19,15 +19,15 @@ n_vessel_y = 4
 
 vessel_radius = 25
 
-n_particle = int(1e7)
+n_particle = int(1e9)
 
 seq_path = "sequences_MOLLI/MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_dt20_center_first.yaml"
 
 # flow_speed_fast = np.linspace(0, 1, 16).astype(str)
 # flow_speed_slow = np.linspace(0, 0.01, 16).astype(str)
 
-flow_speed = np.linspace(0, 0.5, 16 * 4).reshape(4, 16).astype(str)
-# flow_speed = np.linspace(0, 0.02, 2*16).reshape(2, 16).astype(str)
+# flow_speed = np.linspace(0, 0.1, 5 * 16).reshape(5, 16).astype(str)
+flow_speed = np.linspace(0, 0.01, 1 * 16).reshape(1, 16).astype(str)
 # flow_speed = np.linspace(0.9, 1.0, 16).reshape(1, 16).astype(str)
 # flow_speed = np.linspace(0.15, .17, 16).reshape(1, 16).astype(str)
 
@@ -48,9 +48,11 @@ for exp_idx, fs in enumerate(flow_speed):
     _T2_tissue = T2_Tissue
 
     # save_path = "exp_result_fast/ID{}_Speed_min{}_max{}".format(
-    # save_path = "exp_result_slow/ID{}_Speed_min{}_max{}".format(
-    save_path = "exp_result/ID{}_Speed_min{}_max{}".format(
-        exp_idx, fs[0], fs[-1])
+    save_path = "exp_result_slow/ID{}_Speed_min{}_max{}".format(
+        # save_path = "exp_result/ID{}_Speed_min{}_max{}".format(
+        exp_idx,
+        fs[0],
+        fs[-1])
     exp_exec = "build/src/T1-Mapping --T1_Blood {} --T2_Blood {} --T1_Tissue {} --T2_Tissue {} --n_vessel_xy {} {} --vessel_radius {} --n_particle {} --seq_path {} --save_path {} --flow_speed {} --space {}".format(
         " ".join(_T1_blood), " ".join(_T2_blood), _T1_tissue, _T2_tissue,
         n_vessel_x, n_vessel_y, vessel_radius, n_particle, seq_path, save_path,
