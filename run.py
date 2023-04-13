@@ -19,7 +19,7 @@ n_vessel_y = 4
 
 vessel_radius = 25
 
-n_particle = int(1e9)
+n_particle = int(5e8)
 
 seq_path = "sequences_MOLLI/MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_dt20_center_first.yaml"
 
@@ -31,7 +31,7 @@ flow_speed = np.linspace(0, 0.01, 1 * 16).reshape(1, 16).astype(str)
 # flow_speed = np.linspace(0.9, 1.0, 16).reshape(1, 16).astype(str)
 # flow_speed = np.linspace(0.15, .17, 16).reshape(1, 16).astype(str)
 
-space = [256, 256, 32]
+space = [256, 256, 16]
 _space = [str(S) for S in space]
 
 
