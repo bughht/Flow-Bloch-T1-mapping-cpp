@@ -8,7 +8,7 @@ run("mkdir log", shell=True)
 
 # T1_Blood = np.arange(1400, 2001, 100).tolist()
 # T1_Blood = np.linspace(1400, 2000, 7)
-T1_Blood = 1500
+T1_Blood = 1700
 T2_Blood = 50
 
 T1_Tissue = 1000
@@ -19,15 +19,15 @@ n_vessel_y = 4
 
 vessel_radius = 25
 
-n_particle = int(5e8)
+n_particle = int(5e7)
 
 seq_path = "sequences_MOLLI/MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_dt20_center_first.yaml"
 
 # flow_speed_fast = np.linspace(0, 1, 16).astype(str)
 # flow_speed_slow = np.linspace(0, 0.01, 16).astype(str)
 
-# flow_speed = np.linspace(0, 0.1, 5 * 16).reshape(5, 16).astype(str)
 flow_speed = np.linspace(0, 0.01, 1 * 16).reshape(1, 16).astype(str)
+# flow_speed = np.linspace(0, 0.01, 1 * 16).reshape(1, 16).astype(str)
 # flow_speed = np.linspace(0.9, 1.0, 16).reshape(1, 16).astype(str)
 # flow_speed = np.linspace(0.15, .17, 16).reshape(1, 16).astype(str)
 
@@ -36,8 +36,8 @@ _space = [str(S) for S in space]
 
 
 def execute_cmd(cmd, idx):
-    run(cmd + " > log/EXP_id{}.log".format(idx), shell=True)
-    # run(cmd, shell=True)
+    # run(cmd + " > log/EXP_id{}.log".format(idx), shell=True)
+    run(cmd, shell=True)
     # print(cmd)
 
 
@@ -48,7 +48,7 @@ for exp_idx, fs in enumerate(flow_speed):
     _T2_tissue = T2_Tissue
 
     # save_path = "exp_result_fast/ID{}_Speed_min{}_max{}".format(
-    save_path = "exp_result_slow/ID{}_Speed_min{}_max{}".format(
+    save_path = "exp_result_slow_1700/ID{}_Speed_min{}_max{}".format(
         # save_path = "exp_result/ID{}_Speed_min{}_max{}".format(
         exp_idx,
         fs[0],

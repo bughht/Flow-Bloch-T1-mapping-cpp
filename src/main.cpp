@@ -15,6 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with FLOW-BLOCH-T1-MAPPING-CPP.  If not, see <http://www.gnu.org/licenses/>.
 
+// #define EIGEN_USE_MKL_ALL
+#define EIGEN_VECTORIZE_SSE4_2
+#define EIGEN_DONT_PARALLELIZE
+
 #include <cmath>
 #include <cassert>
 #include <iostream>

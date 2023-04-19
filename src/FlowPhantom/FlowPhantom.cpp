@@ -17,7 +17,7 @@
 
 #include "FlowPhantom.h"
 
-#define PARALLEL_THREAD 16
+#define PARALLEL_THREAD 32
 
 FlowPhantom::FlowPhantom(
     int n_vessel_x,
