@@ -25,7 +25,6 @@
 using std::map;
 using std::string;
 using std::vector;
-using YAML::Node;
 
 enum TS_type
 {
@@ -53,7 +52,7 @@ class SeqLoader
 {
 private:
     string seq_file;
-    Node seq_node;
+    YAML::Node seq_node;
     void load_seq();
     void parse_seq();
 

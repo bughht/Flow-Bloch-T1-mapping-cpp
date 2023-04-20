@@ -9,6 +9,7 @@ add_executable(test_matplotlib test_matplotlib.cpp )
 add_executable(test_opencv test_opencv.cpp )
 add_executable(test_bSSFP test_bSSFP.cpp )
 add_executable(test_FlowPhantom test_FlowPhantom.cpp )
+add_executable(test_libtorch test_libtorch.cpp)
 
 target_link_libraries(test_BlochSim BlochSim)
 target_link_libraries(test_yaml SeqLoader)
@@ -29,6 +30,7 @@ target_link_libraries(test_FlowPhantom M_voxel)
 target_link_libraries(test_FlowPhantom FlowPhantom)
 target_link_libraries(test_FlowPhantom BlochSim)
 
+target_link_libraries(test_libtorch "${TORCH_LIBRARIES}") 
 # target_link_libraries(test_bSSFP 
 #     ${Python3_LIBRARIES}
 #     Python3::NumPy

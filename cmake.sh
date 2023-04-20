@@ -1,6 +1,6 @@
 cd build
-# cmake .. \
-cmake -DCMAKE_PREFIX_PATH=/home/honght/libtorch ..
+cmake .. \
+# cmake -DCMAKE_PREFIX_PATH=/home/honght/libtorch ..\
 # -DPYTHON_INCLUDE_DIR=$(python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())")  \
 # -DPYTHON_LIBRARY=$(python -c "import distutils.sysconfig as sysconfig; print(sysconfig.get_config_var('LIBDIR'))") \
 # -DPYTHON3_INCLUDE_DIRS=$(python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())")  \
