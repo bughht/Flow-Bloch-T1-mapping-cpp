@@ -1,4 +1,4 @@
-find_package(OpenMP)
+# find_package(OpenMP)
 project(FlowPhantom)
 aux_source_directory(. DIR_LIB_SRCS)
 
