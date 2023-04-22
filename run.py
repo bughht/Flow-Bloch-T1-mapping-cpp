@@ -14,19 +14,19 @@ T2_Blood = 50
 T1_Tissue = 1000
 T2_Tissue = 50
 
-n_vessel_x = 4
-n_vessel_y = 4
+n_vessel_x = 5
+n_vessel_y = 5
 
-vessel_radius = 25
+vessel_radius = 20
 
-n_particle = int(5e7)
+n_particle = int(5e6)
 
 seq_path = "sequences_MOLLI/MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_dt20_center_first.yaml"
 
 # flow_speed_fast = np.linspace(0, 1, 16).astype(str)
 # flow_speed_slow = np.linspace(0, 0.01, 16).astype(str)
 
-flow_speed = np.linspace(0, 0.01, 1 * 16).reshape(1, 16).astype(str)
+flow_speed = np.linspace(0, 0.01, 1 * n_vessel_x*n_vessel_y).reshape(1,n_vessel_x*n_vessel_y ).astype(str)
 # flow_speed = np.linspace(0, 0.01, 1 * 16).reshape(1, 16).astype(str)
 # flow_speed = np.linspace(0.9, 1.0, 16).reshape(1, 16).astype(str)
 # flow_speed = np.linspace(0.15, .17, 16).reshape(1, 16).astype(str)
@@ -48,7 +48,7 @@ for exp_idx, fs in enumerate(flow_speed):
     _T2_tissue = T2_Tissue
 
     # save_path = "exp_result_fast/ID{}_Speed_min{}_max{}".format(
-    save_path = "exp_result_slow_1700/ID{}_Speed_min{}_max{}".format(
+    save_path = "exp_result_slow_1700_5x5/ID{}_Speed_min{}_max{}".format(
         # save_path = "exp_result/ID{}_Speed_min{}_max{}".format(
         exp_idx,
         fs[0],
