@@ -17,30 +17,39 @@
 
 #include "BlochSim.h"
 
-Matrix3d Rz(double theta)
+Tensor Rz(double theta)
 {
-    Matrix3d Rz;
-    Rz << cos(theta), -sin(theta), 0,
-        sin(theta), cos(theta), 0,
-        0, 0, 1;
+    // Matrix3d Rz;
+    // Rz << cos(theta), -sin(theta), 0,
+    //     sin(theta), cos(theta), 0,
+    //     0, 0, 1;
+    Tensor Rz = torch::tensor({{cos(theta), -sin(theta), 0},
+                               {sin(theta), cos(theta), 0},
+                               {0, 0, 1}});
     return Rz;
 }
 
-Matrix3d Ry(double theta)
+Tensor Ry(double theta)
 {
-    Matrix3d Ry;
-    Ry << cos(theta), 0, sin(theta),
-        0, 1, 0,
-        -sin(theta), 0, cos(theta);
+    // Matrix3d Ry;
+    // Ry << cos(theta), 0, sin(theta),
+    //     0, 1, 0,
+    //     -sin(theta), 0, cos(theta);
+    Tensor Ry = torch::tensor({{cos(theta), 0, sin(theta)},
+                               {0, 1, 0},
+                               {-sin(theta), 0, cos(theta)}});
     return Ry;
 }
 
-Matrix3d Rx(double theta)
+Tensor Rx(double theta)
 {
-    Matrix3d Rx;
-    Rx << 1, 0, 0,
-        0, cos(theta), -sin(theta),
-        0, sin(theta), cos(theta);
+    // Matrix3d Rx;
+    // Rx << 1, 0, 0,
+    //     0, cos(theta), -sin(theta),
+    //     0, sin(theta), cos(theta);
+    Tensor Rx = torch::tensor({{1, 0, 0},
+                               {0, cos(theta), -sin(theta)},
+                               {0, sin(theta), cos(theta)}});
     return Rx;
 }
 
@@ -50,10 +59,14 @@ FP_args freeprecess(double T, double T1, double T2, double df)
     double phi = 2 * M_PI * df * T / 1000;
     double E1 = exp(-T / T1);
     double E2 = exp(-T / T2);
-    args.A << E2, 0, 0,
-        0, E2, 0,
-        0, 0, E1;
-    args.A = args.A * Rz(phi);
-    args.B << 0, 0, (1 - E1);
+    // args.A << E2, 0, 0,
+    //     0, E2, 0,
+    //     0, 0, E1;
+    args.A = torch::tensor({{E2, 0, 0},
+                            {0, E2, 0},
+                            {0, 0, E1}});
+    args.A = args.A.matmul(Rz(phi));
+    // args.B << 0, 0, (1 - E1);
+    args.B = torch::tensor({0, 0, (1 - E1)});
     return args;
 }

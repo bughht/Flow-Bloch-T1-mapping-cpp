@@ -367,10 +367,12 @@ void simulate_phantom(vector<TS> seq, FlowPhantom phantom, vector<int> k_shape, 
     double Gx = 0, Gy = 0;
     vector<TS> flip_global_history;
 
-    cv::Mat k_space_real = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
-    cv::Mat k_space_imag = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
-    cv::Mat spatial_real = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
-    cv::Mat spatial_imag = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
+    // cv::Mat k_space_real = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
+    // cv::Mat k_space_imag = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
+    // cv::Mat spatial_real = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
+    // cv::Mat spatial_imag = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
+    Tensor k_space;
+    Tensor spatial;
 
     complex<double> adc;
     int ADC_counter = 0;
@@ -382,36 +384,37 @@ void simulate_phantom(vector<TS> seq, FlowPhantom phantom, vector<int> k_shape, 
         {
             std::cout << std::endl
                       << "START READOUT" << std::endl;
-            k_space_real = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
-            k_space_imag = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
+            k_space = torch::zeros({k_shape[0], k_shape[1]}, torch::kComplexDouble);
+            // k_space_real = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
+            // k_space_imag = cv::Mat_<double>(k_shape[0], k_shape[1], 0.0);
         }
         if (ts.type == READOUT_END)
         {
             std::cout << std::endl
                       << "END READOUT" << std::endl;
-            cv::Mat k_space_[2] = {k_space_real, k_space_imag};
-            cv::Mat spatial_[2] = {spatial_real, spatial_imag};
-            cv::Mat k_space, spatial;
-            cv::merge(k_space_, 2, k_space);
-            cv::idft(k_space, spatial);
-            cv::split(spatial, spatial_);
-            cv::magnitude(spatial_[0], spatial_[1], spatial);
-            cv::magnitude(k_space_[0], k_space_[1], k_space);
-            auto roi_upleft = cv::Rect(0, 0, k_shape[1] / 2, k_shape[0] / 2);
-            auto roi_upright = cv::Rect(k_shape[1] / 2, 0, k_shape[1] / 2, k_shape[0] / 2);
-            auto roi_downleft = cv::Rect(0, k_shape[0] / 2, k_shape[1] / 2, k_shape[0] / 2);
-            auto roi_downright = cv::Rect(k_shape[1] / 2, k_shape[0] / 2, k_shape[1] / 2, k_shape[0] / 2);
-            cv::flip(spatial(roi_upleft), spatial(roi_upleft), -1);
-            cv::flip(spatial(roi_upright), spatial(roi_upright), -1);
-            cv::flip(spatial(roi_downleft), spatial(roi_downleft), -1);
-            cv::flip(spatial(roi_downright), spatial(roi_downright), -1);
-            fs::path kspace_path = save_path / ("Kspace" + std::to_string(readout_id) + ".bin");
-            fs::path spatial_path = save_path / ("Spatial" + std::to_string(readout_id) + ".bin");
+            // cv::Mat k_space_[2] = {k_space_real, k_space_imag};
+            // cv::Mat spatial_[2] = {spatial_real, spatial_imag};
+            // cv::Mat k_space, spatial;
+            // cv::merge(k_space_, 2, k_space);
+            // cv::idft(k_space, spatial);
+            // cv::split(spatial, spatial_);
+            // cv::magnitude(spatial_[0], spatial_[1], spatial);
+            // cv::magnitude(k_space_[0], k_space_[1], k_space);
+            // auto roi_upleft = cv::Rect(0, 0, k_shape[1] / 2, k_shape[0] / 2);
+            // auto roi_upright = cv::Rect(k_shape[1] / 2, 0, k_shape[1] / 2, k_shape[0] / 2);
+            // auto roi_downleft = cv::Rect(0, k_shape[0] / 2, k_shape[1] / 2, k_shape[0] / 2);
+            // auto roi_downright = cv::Rect(k_shape[1] / 2, k_shape[0] / 2, k_shape[1] / 2, k_shape[0] / 2);
+            // cv::flip(spatial(roi_upleft), spatial(roi_upleft), -1);
+            // cv::flip(spatial(roi_upright), spatial(roi_upright), -1);
+            // cv::flip(spatial(roi_downleft), spatial(roi_downleft), -1);
+            // cv::flip(spatial(roi_downright), spatial(roi_downright), -1);
+            // fs::path kspace_path = save_path / ("Kspace" + std::to_string(readout_id) + ".bin");
+            // fs::path spatial_path = save_path / ("Spatial" + std::to_string(readout_id) + ".bin");
 
-            cv::FileStorage fs_kspace(kspace_path.string(), cv::FileStorage::WRITE);
-            cv::FileStorage fs_spatial(spatial_path.string(), cv::FileStorage::WRITE);
-            fs_kspace << "mat" << k_space;
-            fs_spatial << "mat" << spatial;
+            // cv::FileStorage fs_kspace(kspace_path.string(), cv::FileStorage::WRITE);
+            // cv::FileStorage fs_spatial(spatial_path.string(), cv::FileStorage::WRITE);
+            // fs_kspace << "mat" << k_space;
+            // fs_spatial << "mat" << spatial;
             readout_id++;
         }
         phantom.flow(ts.t - t);
@@ -430,13 +433,15 @@ void simulate_phantom(vector<TS> seq, FlowPhantom phantom, vector<int> k_shape, 
             adc = phantom.adc();
             if (ADC_counter % 2)
             {
-                k_space_real.at<double>(ts.kx, ts.ky) = adc.real();
-                k_space_imag.at<double>(ts.kx, ts.ky) = adc.imag();
+                k_space[ts.kx][ts.ky] = adc;
+                // k_space_real.at<double>(ts.kx, ts.ky) = adc.real();
+                // k_space_imag.at<double>(ts.kx, ts.ky) = adc.imag();
             }
             else
             {
-                k_space_real.at<double>(ts.kx, ts.ky) = -adc.real();
-                k_space_imag.at<double>(ts.kx, ts.ky) = -adc.imag();
+                k_space[ts.kx][ts.ky] = -adc;
+                // k_space_real.at<double>(ts.kx, ts.ky) = -adc.real();
+                // k_space_imag.at<double>(ts.kx, ts.ky) = -adc.imag();
             }
         }
         else

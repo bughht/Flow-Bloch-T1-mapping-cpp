@@ -21,8 +21,8 @@ add_executable(T1-Mapping main.cpp)
 target_link_libraries(T1-Mapping BlochSim)
 target_link_libraries(T1-Mapping SeqLoader)
 target_link_libraries(T1-Mapping M_voxel)
-target_link_libraries(T1-Mapping SeqSimulator)
 target_link_libraries(T1-Mapping FlowPhantom)
+target_link_libraries(T1-Mapping SeqSimulator)
 target_link_libraries(T1-Mapping OpenMP::OpenMP_CXX)
 # target_link_libraries(T1-Mapping 
 #     ${Python3_LIBRARIES}

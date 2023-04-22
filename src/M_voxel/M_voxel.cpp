@@ -17,25 +17,25 @@
 
 #include "M_voxel.h"
 
-ADC_args::ADC_args(Vector3d M)
-{
-    this->M = M;
-    this->Mz = M(2);
-    this->Mxy = {M(0), M(1)};
-    this->amplitude = abs(Mxy);
-    this->phase = arg(Mxy);
-}
+// ADC_args::ADC_args(Tensor M)
+// {
+//     this->M = M;
+//     this->Mz = M[2];
+//     this->Mxy = {M[0], M[1]};
+//     this->amplitude = abs(Mxy);
+//     this->phase = arg(Mxy);
+// }
 
-ADC_args::ADC_args(double Mx, double My, double Mz)
-{
-    this->M << Mx, My, Mz;
-    this->Mz = Mz;
-    this->Mxy = {Mx, My};
-    this->amplitude = abs(Mxy);
-    this->phase = arg(Mxy);
-}
+// ADC_args::ADC_args(double Mx, double My, double Mz)
+// {
+//     this->M = torch::tensor(Mx, My, Mz);
+//     this->Mz = Mz;
+//     this->Mxy = {Mx, My};
+//     this->amplitude = abs(Mxy);
+//     this->phase = arg(Mxy);
+// }
 
-M_voxel::M_voxel(double T1, double T2, Vector3d pos = Vector3d(0, 0, 0), Vector3d M = Vector3d(0, 0, 1), Vector3d flow_speed = Vector3d(0, 0, 0))
+M_voxel::M_voxel(double T1, double T2, Tensor pos = torch::tensor({0, 0, 0}), Tensor M = torch::tensor({0, 0, 1}), Tensor flow_speed = torch::tensor({0, 0, 0}))
 {
     this->T1 = T1;
     this->T2 = T2;
@@ -51,18 +51,18 @@ M_voxel::~M_voxel()
 void M_voxel::flip(double FA)
 {
     double theta = FA * M_PI / 180;
-    Matrix3d R = Ry(theta);
+    Tensor R = Ry(theta);
     // std::cout << "origin" << this->M.transpose() << std::endl;
-    this->M = R * this->M;
+    this->M = R.matmul(this->M);
     // std::cout << "flipped" << this->M.transpose() << std::endl;
 }
 
 void M_voxel::free_precess(double T, double Gx, double Gy)
 {
     // std::cout << "Gx: " << Gx << ", Gy: " << Gy << ", t: " << T << std::endl;
-    double df = GAMMA * Gx * this->pos(0) + GAMMA * Gy * this->pos(1);
+    double df = GAMMA * Gx * this->pos[0].item().to<double>() + GAMMA * Gy * this->pos[1].item().to<double>();
     FP_args AB = freeprecess(T, this->T1, this->T2, df);
-    this->M = AB.A * this->M + AB.B;
+    this->M = AB.A.matmul(this->M) + AB.B;
 }
 
 void M_voxel::update_pos(double dt)
@@ -70,18 +70,19 @@ void M_voxel::update_pos(double dt)
     this->pos += this->flow_speed * dt;
 }
 
-Vector3d M_voxel::get_pos()
+Tensor M_voxel::get_pos()
 {
     return this->pos;
 }
 
-ADC_args M_voxel::readout()
-{
-    ADC_args adc(this->M);
-    return adc;
-}
+// ADC_args M_voxel::readout()
+// {
+//     ADC_args adc(this->M);
+//     return adc;
+// }
 
+// complex<double> M_voxel::adc()
 complex<double> M_voxel::adc()
 {
-    return {this->M(0), this->M(1)};
+    return {this->M[0].item().to<double>(), this->M[1].item().to<double>()};
 }

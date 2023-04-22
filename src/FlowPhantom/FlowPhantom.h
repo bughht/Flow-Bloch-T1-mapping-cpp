@@ -18,7 +18,7 @@
 #ifndef FLOWPHANTOM_H
 #define FLOWPHANTOM_H
 
-#include <Eigen/Dense>
+// #include <Eigen/Dense>
 #include <M_voxel.h>
 #include <SeqLoader.h>
 #include <cmath>
@@ -27,9 +27,9 @@
 #include <omp.h>
 #include <iostream>
 
-using Eigen::Matrix3d;
-using Eigen::Vector2d;
-using Eigen::Vector3d;
+// using Eigen::Matrix3d;
+// using Eigen::Vector2d;
+// using Eigen::Vector3d;
 using std::complex;
 using std::vector;
 
@@ -40,7 +40,7 @@ public:
     int n_vessel_y;
     int n_vessel;
     int vessel_radius;
-    vector<Vector2d> vessel_centers;
+    Tensor vessel_centers;
 
     vector<double> T1;
     vector<double> T2;

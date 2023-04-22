@@ -18,22 +18,23 @@
 #ifndef BLOCHSIM_H
 #define BLOCHSIM_H
 
-#include <Eigen/Dense>
-// #include <torch/torch.h>
+// #include <Eigen/Dense>
+#include <torch/torch.h>
 #include <cmath>
 
-using Eigen::Matrix3d;
-using Eigen::Vector3d;
+// using Eigen::Matrix3d;
+// using Eigen::Vector3d;
+using torch::Tensor;
 
 struct FP_args
 {
-    Matrix3d A;
-    Vector3d B;
+    Tensor A;
+    Tensor B;
 };
 
-Matrix3d Rz(double theta);
-Matrix3d Ry(double theta);
-Matrix3d Rx(double theta);
+Tensor Rz(double theta);
+Tensor Ry(double theta);
+Tensor Rx(double theta);
 
 FP_args freeprecess(double T, double T1, double T2, double df);
 

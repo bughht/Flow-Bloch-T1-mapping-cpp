@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with FLOW-BLOCH-T1-MAPPING-CPP.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "SeqLoader.h"
+#include <SeqLoader.h>
 map<string, TS_type> TS_type_map = {
     {"NONE", NONE},
     {"PULSE", PULSE},

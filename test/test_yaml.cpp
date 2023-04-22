@@ -21,7 +21,7 @@
 
 int main(int argc, char **argv)
 {
-    SeqLoader sb("sequences_ssfp/TR2.8_FA10.yaml");
+    SeqLoader sb("sequences_ssfp/TR2.8_FA90_FOV500_K64_center_first.yaml");
     auto ts_list = sb.TS_list;
     for (auto ts : ts_list)
     {

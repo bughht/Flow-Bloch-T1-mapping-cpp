@@ -45,12 +45,15 @@ FlowPhantom::FlowPhantom(
 void FlowPhantom::vessel_init(void)
 {
     this->n_vessel = this->n_vessel_x * this->n_vessel_y;
+    this->vessel_centers = torch::zeros({this->n_vessel, 2});
+    int i = 0;
     for (int x = 0; x < this->n_vessel_x; x++)
         for (int y = 0; y < this->n_vessel_y; y++)
         {
-            Vector2d center;
-            center << this->space[0] * (2 * x + 1 - this->n_vessel_x) / (2 * this->n_vessel_x), this->space[1] * (2 * y + 1 - this->n_vessel_y) / (2 * this->n_vessel_y);
-            this->vessel_centers.push_back(center);
+            this->vessel_centers[i][0] = this->space[0] * (2 * x + 1 - this->n_vessel_x) / (2 * this->n_vessel_x);
+            this->vessel_centers[i][1] = this->space[1] * (2 * y + 1 - this->n_vessel_y) / (2 * this->n_vessel_y);
+            // center << this->space[0] * (2 * x + 1 - this->n_vessel_x) / (2 * this->n_vessel_x), this->space[1] * (2 * y + 1 - this->n_vessel_y) / (2 * this->n_vessel_y);
+            i++;
         }
 }
 
@@ -64,14 +67,13 @@ void FlowPhantom::particle_init(void)
 
     for (int i = 0; i < this->n_particle; i++)
     {
-        Vector3d position(
-            distribution_x(gen), distribution_y(gen), distribution_z(gen));
+        Tensor position = torch::tensor({distribution_x(gen), distribution_y(gen), distribution_z(gen)});
         double p_T1 = this->T1.back();
         double p_T2 = this->T2.back();
         double p_flow_speed = 0;
         for (int j = 0; j < this->n_vessel; j++)
         {
-            if ((position.head<2>() - this->vessel_centers[j]).norm() < this->vessel_radius)
+            if ((position.index({0, 1}) - this->vessel_centers[j]).norm().item().to<double>() < this->vessel_radius)
             {
                 // std::cout << position[0] << " " << position[1] << " " << (position.head<2>() - this->vessel_centers[j]).norm() << " ";
                 p_T1 = this->T1[j];
@@ -85,8 +87,8 @@ void FlowPhantom::particle_init(void)
             p_T1,
             p_T2,
             position,
-            Vector3d(0, 0, 1),
-            Vector3d(0, 0, p_flow_speed));
+            torch::tensor({0, 0, 1}),
+            torch::tensor({0, 0, p_flow_speed}));
         this->particles.push_back(particle);
     }
 }
@@ -128,7 +130,7 @@ void FlowPhantom::flip(double FA, double thickness)
 #pragma omp parallel for num_threads(PARALLEL_THREAD)
         for (M_voxel &particle : this->particles)
         {
-            if (fabs(particle.pos[2]) < thickness / 2)
+            if (particle.pos[2].abs().item().to<double>() < thickness / 2)
                 particle.flip(FA);
         }
     }
@@ -139,11 +141,11 @@ void FlowPhantom::update_outofrange(vector<TS> &flip_global, double t_now)
 #pragma omp parallel for num_threads(PARALLEL_THREAD)
     for (M_voxel &particle : this->particles)
     {
-        if (particle.pos[2] > this->space[2] / 2)
+        if (particle.pos[2].item().to<double>() > this->space[2] / 2)
         {
             double t_particle = 0;
             particle.pos[2] -= this->space[2];
-            particle.M = Vector3d(0, 0, 1);
+            particle.M = torch::tensor({0, 0, 1});
             for (TS &flip : flip_global)
             {
                 particle.free_precess(flip.t - t_particle, 0, 0);
@@ -160,16 +162,17 @@ complex<double> FlowPhantom::adc()
     // complex<double> sum(0, 0);
     double sum_r = 0, sum_i = 0;
 
-// #pragma omp parallel for num_threads(32) shared(sum)
+    // #pragma omp parallel for num_threads(32) shared(sum)
 #pragma omp parallel for reduction(+                    \
                                    : sum_i) reduction(+ \
-                                                      : sum_r) num_threads(32)
+                                                      : sum_r) num_threads(33)
     for (M_voxel &particle : this->particles)
     {
         // #pragma omp atomic
         // sum += particle.adc();
-        sum_r += particle.adc().real();
-        sum_i += particle.adc().imag();
+        complex<double> adc = particle.adc();
+        sum_r += adc.real();
+        sum_i += adc.imag();
     }
     // return sum * (1.0 / this->n_particle);
     return complex<double>(sum_r, sum_i);

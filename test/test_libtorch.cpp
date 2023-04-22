@@ -12,6 +12,7 @@ void pretty_print(const std::string &info, T &&data)
 int main()
 {
     torch::Device device = torch::kCPU;
+    torch::AutoGradMode enable_grad(false);
     std::cout << "CUDA DEVICE COUNT: " << torch::cuda::device_count() << std::endl;
     if (torch::cuda::is_available())
     {

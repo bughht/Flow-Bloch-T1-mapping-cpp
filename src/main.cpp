@@ -23,16 +23,16 @@
 #include <cassert>
 #include <iostream>
 #include <BlochSim.h>
-#include <Eigen/Dense>
+// #include <Eigen/Dense>
+#include <SeqLoader.h>
 #include <M_voxel.h>
-#include <iostream>
 #include <SeqSimulator.h>
 #include "argparse.hpp"
 // #include <matplotlibcpp.h>
 
-using Eigen::Matrix;
-using Eigen::Matrix3d;
-using Eigen::Vector3d;
+// using Eigen::Matrix;
+// using Eigen::Matrix3d;
+// using Eigen::Vector3d;
 using std::vector;
 
 int main(int argc, char **argv)
@@ -120,17 +120,17 @@ int main(int argc, char **argv)
     if (!fs::exists(save_path))
         fs::create_directory(save_path);
 
-    SeqLoader sq(seq_path);
-    FlowPhantom phantom(
-        n_vessel_xy[0],
-        n_vessel_xy[1],
-        vessel_radius,
-        T1,
-        T2,
-        flow_speed,
-        space,
-        n_particle);
-    simulate_phantom(sq.TS_list, phantom, {64, 64}, save_path);
+    // SeqLoader sq(seq_path);
+    // FlowPhantom phantom(
+    //     n_vessel_xy[0],
+    //     n_vessel_xy[1],
+    //     vessel_radius,
+    //     T1,
+    //     T2,
+    //     flow_speed,
+    //     space,
+    //     n_particle);
+    // simulate_phantom(sq.TS_list, phantom, {64, 64}, save_path);
     // std::cout << program.get<vector<int>>("--n_vessel_xy")[0] << program.get<vector<int>>("--n_vessel_xy")[1] << std::endl;
     // std::cout << program.get<double>("--vessel_radius") << std::endl;
     // std::cout << program.get<vector<double>>("--T1_Blood")[0] << std::endl;

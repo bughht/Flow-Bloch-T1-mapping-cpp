@@ -50,13 +50,12 @@ struct TS
 
 class SeqLoader
 {
-private:
+public:
     string seq_file;
     YAML::Node seq_node;
     void load_seq();
     void parse_seq();
 
-public:
     vector<TS> TS_list;
     SeqLoader(std::string seq_file);
     void print_seq();

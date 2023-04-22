@@ -5,5 +5,5 @@ set(SOURCE_FILES
     SeqLoader.cpp
     SeqLoader.h)
 
-add_library(SeqLoader ${SOURCE_FILES})
+add_library(SeqLoader SeqLoader.cpp SeqLoader.h)
 target_link_libraries(SeqLoader yaml-cpp)
