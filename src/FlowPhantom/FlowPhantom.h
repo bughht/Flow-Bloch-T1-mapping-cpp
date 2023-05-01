@@ -47,6 +47,7 @@ public:
     vector<double> flow_speed;
 
     vector<double> space;
+    vector<int> ksize;
 
     vector<M_voxel> particles;
     int n_particle;
@@ -59,6 +60,7 @@ public:
         vector<double> T2,
         vector<double> flow_speed,
         vector<double> space,
+        vector<int> ksize,
         int n_particle);
 
     void vessel_init(void);

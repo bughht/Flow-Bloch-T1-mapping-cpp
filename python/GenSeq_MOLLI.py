@@ -85,6 +85,5 @@ if __name__ == "__main__":
     # molli.generate("MOLLI_533_TR2.8_FA20_FOV320_K64_center_first")
     # molli = MOLLI(readout_seq="TR2.8_FA10_FOV320_K64_center_first")
     # molli.generate("MOLLI_533_TR2.8_FA10_FOV320_K64_center_first")
-    molli = MOLLI(readout_seq="TR2.8_FA35_FOV256_K64_thick8_center_first",
-                  dt=20)
-    molli.generate("MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_dt20_center_first")
+    molli = MOLLI(readout_seq="TR2.8_FA35_FOV256_K64_thick8", dt=20)
+    molli.generate("MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_dt20")

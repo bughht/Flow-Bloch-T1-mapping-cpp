@@ -27,6 +27,7 @@ FlowPhantom::FlowPhantom(
     vector<double> T2,
     vector<double> flow_speed,
     vector<double> space,
+    vector<int> ksize,
     int n_particle)
 {
     this->n_vessel_x = n_vessel_x;
@@ -36,6 +37,7 @@ FlowPhantom::FlowPhantom(
     this->T2 = T2;
     this->flow_speed = flow_speed;
     this->space = space;
+    this->ksize = ksize;
     this->n_particle = n_particle;
 
     this->vessel_init();
@@ -58,6 +60,8 @@ void FlowPhantom::particle_init(void)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
+    // std::uniform_int_distribution<int> distribution_kx(-this->ksize[0] / 2 + 1, this->ksize[0] / 2 - 1);
+    // std::uniform_int_distribution<int> distribution_ky(-this->ksize[1] / 2, this->ksize[1] / 2 - 1);
     std::uniform_real_distribution<double> distribution_x(-this->space[0] / 2, this->space[0] / 2);
     std::uniform_real_distribution<double> distribution_y(-this->space[1] / 2, this->space[1] / 2);
     std::uniform_real_distribution<double> distribution_z(-this->space[2] / 2, this->space[2] / 2);
@@ -65,6 +69,7 @@ void FlowPhantom::particle_init(void)
     for (int i = 0; i < this->n_particle; i++)
     {
         Vector3d position(
+            // 1.0 * distribution_kx(gen) / this->ksize[0] * this->space[0], 1.0 * distribution_ky(gen) / this->ksize[1] * this->space[1], distribution_z(gen));
             distribution_x(gen), distribution_y(gen), distribution_z(gen));
         double p_T1 = this->T1.back();
         double p_T2 = this->T2.back();

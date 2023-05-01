@@ -144,5 +144,5 @@ if __name__ == "__main__":
     # ssfp.generate("TR2.8_FA20_FOV320_K64_center_first")
     # ssfp = bSSFP(2.8, 20, [320, 320], [64, 64], 10, False, True, True)
     # ssfp.generate("TR2.8_FA20_FOV320_K64")
-    ssfp = bSSFP(2.8, 35, [256, 256], [64, 64], 8, True, True, True)
-    ssfp.generate("TR2.8_FA35_FOV256_K64_thick8_center_first")
+    ssfp = bSSFP(2.8, 35, [256, 256], [64, 64], 8, False, True, True)
+    ssfp.generate("TR2.8_FA35_FOV256_K64_thick8")

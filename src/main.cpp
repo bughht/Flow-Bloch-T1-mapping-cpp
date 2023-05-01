@@ -129,6 +129,7 @@ int main(int argc, char **argv)
         T2,
         flow_speed,
         space,
+        (vector<int>){64, 64},
         n_particle);
     simulate_phantom(sq.TS_list, phantom, {64, 64}, save_path);
     // std::cout << program.get<vector<int>>("--n_vessel_xy")[0] << program.get<vector<int>>("--n_vessel_xy")[1] << std::endl;
