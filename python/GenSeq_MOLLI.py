@@ -85,5 +85,13 @@ if __name__ == "__main__":
     # molli.generate("MOLLI_533_TR2.8_FA20_FOV320_K64_center_first")
     # molli = MOLLI(readout_seq="TR2.8_FA10_FOV320_K64_center_first")
     # molli.generate("MOLLI_533_TR2.8_FA10_FOV320_K64_center_first")
-    molli = MOLLI(readout_seq="TR2.8_FA35_FOV256_K64_thick8", dt=20)
-    molli.generate("MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_dt20")
+    # molli = MOLLI(readout_seq="TR2.8_FA35_FOV256_K64_thick8", dt=20)
+    # molli.generate("MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_dt20")
+    molli = MOLLI(readout_seq="TR2.8_FA35_FOV256_K64_thick8")
+    molli.generate("MOLLI_533_TR2.8_FA35_FOV256_K64_thick8")
+    # molli = MOLLI(readout_seq="TR2.8_FA35_FOV2_K2_thick8",
+    #               dt=20, reverse_t=[0], readout_t=[100])
+    # molli.generate("TEST_SSFP_533_TR2.8_FA35_FOV2_K2_thick8_dt20")
+    # molli = MOLLI(readout_seq="TR2.8_FA35_FOV256_K64_thick8",
+    #               dt=20, reverse_t=[0], readout_t=[100])
+    # molli.generate("TEST_SSFP_533_TR2.8_FA35_FOV256_K64_thick8_dt20")

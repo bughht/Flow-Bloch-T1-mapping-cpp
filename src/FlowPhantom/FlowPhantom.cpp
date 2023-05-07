@@ -147,7 +147,8 @@ void FlowPhantom::update_outofrange(vector<TS> &flip_global, double t_now)
         if (particle.pos[2] > this->space[2] / 2)
         {
             double t_particle = 0;
-            particle.pos[2] -= this->space[2];
+            while (particle.pos[2] > this->space[2] / 2)
+                particle.pos[2] -= this->space[2];
             particle.M = Vector3d(0, 0, 1);
             for (TS &flip : flip_global)
             {
@@ -166,9 +167,7 @@ complex<double> FlowPhantom::adc()
     double sum_r = 0, sum_i = 0;
 
 // #pragma omp parallel for num_threads(32) shared(sum)
-#pragma omp parallel for reduction(+                    \
-                                   : sum_i) reduction(+ \
-                                                      : sum_r) num_threads(32)
+#pragma omp parallel for reduction(+ : sum_i) reduction(+ : sum_r) num_threads(32)
     for (M_voxel &particle : this->particles)
     {
         // #pragma omp atomic

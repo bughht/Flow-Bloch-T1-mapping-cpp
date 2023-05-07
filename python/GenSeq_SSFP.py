@@ -21,7 +21,7 @@ class bSSFP:
         self.TR, self.FA, self.FOV, self.k_shape, self.slice_thickness, self.k_center_first, self.sign_alter, self.preparation = TR, FA, np.array(
             FOV), np.array(
                 k_shape
-            ), slice_thickness, k_center_first, sign_alter, preparation
+        ), slice_thickness, k_center_first, sign_alter, preparation
         self.data_process()
 
     def data_process(self):
@@ -144,5 +144,7 @@ if __name__ == "__main__":
     # ssfp.generate("TR2.8_FA20_FOV320_K64_center_first")
     # ssfp = bSSFP(2.8, 20, [320, 320], [64, 64], 10, False, True, True)
     # ssfp.generate("TR2.8_FA20_FOV320_K64")
-    ssfp = bSSFP(2.8, 35, [256, 256], [64, 64], 8, False, True, True)
-    ssfp.generate("TR2.8_FA35_FOV256_K64_thick8")
+    # ssfp = bSSFP(2.8, 35, [256, 256], [64, 64], 8, False, True, True)
+    # ssfp.generate("TR2.8_FA35_FOV256_K64_thick8")
+    ssfp = bSSFP(2.8, 35, [2, 2], [2, 2], 8, False, True, True)
+    ssfp.generate("TR2.8_FA35_FOV2_K2_thick8")
