@@ -54,7 +54,7 @@ public:
     M_voxel(double T1, double T2, Vector3d pos, Vector3d M, Vector3d flow_speed);
     ~M_voxel();
     void flip(double FA);
-    void free_precess(double T, double Gx, double Gy);
+    void free_precess(double T, double Gx, double Gy, double Gz);
     void update_pos(double dt);
     Vector3d get_pos();
     ADC_args readout();

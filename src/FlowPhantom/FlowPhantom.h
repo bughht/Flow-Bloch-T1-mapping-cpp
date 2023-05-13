@@ -67,7 +67,7 @@ public:
     void particle_init(void);
     void show(void);
 
-    void free_precess(double t, double Gx, double Gy);
+    void free_precess(double t, double Gx, double Gy, double Gz);
     void flow(double t);
     void flip(double FA, double thickness);
     void update_outofrange(vector<TS> &flip_global, double t_now);

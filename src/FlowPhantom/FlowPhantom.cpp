@@ -106,11 +106,11 @@ void FlowPhantom::show(void)
     }
 }
 
-void FlowPhantom::free_precess(double t, double Gx, double Gy)
+void FlowPhantom::free_precess(double t, double Gx, double Gy, double Gz)
 {
 #pragma omp parallel for num_threads(PARALLEL_THREAD)
     for (M_voxel &particle : this->particles)
-        particle.free_precess(t, Gx, Gy);
+        particle.free_precess(t, Gx, Gy, Gz);
 }
 
 void FlowPhantom::flow(double t)
@@ -152,11 +152,11 @@ void FlowPhantom::update_outofrange(vector<TS> &flip_global, double t_now)
             particle.M = Vector3d(0, 0, 1);
             for (TS &flip : flip_global)
             {
-                particle.free_precess(flip.t - t_particle, 0, 0);
+                particle.free_precess(flip.t - t_particle, 0, 0, 0);
                 particle.flip(flip.FA);
                 t_particle = flip.t;
             }
-            particle.free_precess(t_now - t_particle, 0, 0);
+            particle.free_precess(t_now - t_particle, 0, 0, 0);
         }
     }
 }

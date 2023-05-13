@@ -21,6 +21,7 @@ map<string, TS_type> TS_type_map = {
     {"PULSE", PULSE},
     {"GX", GX},
     {"GY", GY},
+    {"GZ", GZ},
     {"ADC", ADC},
     {"READOUT_START", READOUT_START},
     {"READOUT_END", READOUT_END}};
@@ -88,6 +89,9 @@ void SeqLoader::parse_seq()
             ts_obj.G = ts["G"].as<double>();
             break;
         case GY:
+            ts_obj.G = ts["G"].as<double>();
+            break;
+        case GZ:
             ts_obj.G = ts["G"].as<double>();
             break;
         case ADC:

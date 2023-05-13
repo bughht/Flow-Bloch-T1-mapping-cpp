@@ -33,6 +33,7 @@ enum TS_type
     PULSE,
     GX,
     GY,
+    GZ,
     ADC,
     READOUT_START,
     READOUT_END
