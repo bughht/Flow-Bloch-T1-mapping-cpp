@@ -14,14 +14,15 @@ T2_Blood = 50
 T1_Tissue = 1000
 T2_Tissue = 50
 
-# n_vessel_x = 5
-# n_vessel_y = 5
-n_vessel_x = 1
-n_vessel_y = 1
+n_vessel_x = 5
+n_vessel_y = 5
+# n_vessel_x = 1
+# n_vessel_y = 1
 
-vessel_radius = 60
+vessel_radius = 22
+# vessel_radius = 60
 
-n_particle = int(4e7)
+n_particle = int(3e7)
 
 # seq_path = "sequences_MOLLI/MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_dt20_center_first.yaml"
 # seq_path = "sequences_MOLLI/TEST_SSFP_533_TR2.8_FA35_FOV256_K64_thick8_Gz_dt20.yaml"
@@ -35,15 +36,15 @@ seq_path = "sequences_MOLLI/MOLLI_533_TR2.8_FA35_FOV256_K64_thick8_Gz_dt20.yaml"
 # flow_speed = np.linspace(0, 0.02, 2 * n_vessel_x * n_vessel_y).reshape(
 #     2, n_vessel_x * n_vessel_y).astype(str)
 flow_speed = (
-    np.linspace(0, 4, 5 * n_vessel_x * n_vessel_y)
-    .reshape(5, n_vessel_x * n_vessel_y)
+    np.linspace(0, 0.3, 2 * n_vessel_x * n_vessel_y)
+    .reshape(2, n_vessel_x * n_vessel_y)
     .astype(str)
 )
 # flow_speed = np.linspace(0, 0.01, 1 * 16).reshape(1, 16).astype(str)
 # flow_speed = np.linspace(0.9, 1.0, 16).reshape(1, 16).astype(str)
 # flow_speed = np.linspace(0.15, .17, 16).reshape(1, 16).astype(str)
 
-space = [256, 256, 512]
+space = [256, 256, 600]
 _space = [str(S) for S in space]
 
 
@@ -59,7 +60,8 @@ for exp_idx, fs in enumerate(flow_speed):
     _T1_tissue = T1_Tissue
     _T2_tissue = T2_Tissue
 
-    save_path = "experiments/exp_MOLLI_0_4_1x1/ID{}_Speed_min{}_max{}".format(
+    # save_path = "experiments/exp_MOLLI_0_4_1x1/ID{}_Speed_min{}_max{}".format(
+    save_path = "experiments/exp_MOLLI_0_0.5/ID{}_Speed_min{}_max{}".format(
         # save_path = "experiments/exp_MOLLI_0_0.3/ID{}_Speed_min{}_max{}".format(
         # save_path = "experiments/exp_ssfp_gz/ID{}_Speed_min{}_max{}".format(
         # save_path = "exp_result_ssfp_fast/ID{}_Speed_min{}_max{}".format(
