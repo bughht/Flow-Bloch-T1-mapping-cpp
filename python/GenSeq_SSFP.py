@@ -2,7 +2,7 @@ import yaml
 import numpy as np
 import os
 
-gamma = 42.577478518e6  # Hz/T
+gamma = 42.577478518e6  # MHz/T
 
 
 class bSSFP:
