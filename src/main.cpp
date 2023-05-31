@@ -132,13 +132,4 @@ int main(int argc, char **argv)
         (vector<int>){64, 64},
         n_particle);
     simulate_phantom(sq.TS_list, phantom, {64, 64}, save_path);
-    // std::cout << program.get<vector<int>>("--n_vessel_xy")[0] << program.get<vector<int>>("--n_vessel_xy")[1] << std::endl;
-    // std::cout << program.get<double>("--vessel_radius") << std::endl;
-    // std::cout << program.get<vector<double>>("--T1_Blood")[0] << std::endl;
-    // std::cout << program.get<vector<double>>("--T2_Blood")[0] << std::endl;
-    // std::cout << program.get<double>("--T1_Tissue") << std::endl;
-    // std::cout << program.get<double>("--T2_Tissue") << std::endl;
-    // std::cout << program.get<vector<double>>("--flow_speed")[0] << std::endl;
-    // std::cout << program.get<vector<double>>("--space")[0] << std::endl;
-    // std::cout << program.get<int>("--n_particle") << std::endl;
 }

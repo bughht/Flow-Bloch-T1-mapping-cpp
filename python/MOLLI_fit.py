@@ -34,7 +34,7 @@ def MF_MAGIR(t, Mz):
         Mz_local = Mz.copy()
         Mz_local[:i] *= -1
         p_opt, p_cov = curve_fit(
-            T1_curve, t, Mz_local, p0=[1, 10, 10], maxfev=int(1e8), check_finite=False
+            T1_curve, t, Mz_local, p0=[2, 10, 10], maxfev=int(1e8), check_finite=False
         )
         #  1, 5, 5], bounds=([0, -10, -10], [10, 10, 10]), maxfev=int(1e5))
         popts.append(p_opt)
@@ -52,7 +52,11 @@ def MF_MAGIR(t, Mz):
 
 if __name__ == "__main__":
     t = np.array([200, 1200, 2200, 3200, 4200, 300, 1300, 2300]) * 1e-3
-    Mz0 = np.array([0.55, 0.39, 0.63, 0.71, 0.73, 0.40, 0.42, 0.64])/1e3
+    # Mz0 = np.array([0.55, 0.39, 0.63, 0.71, 0.73, 0.40, 0.42, 0.64])/1e3
+    Mz0 = np.array([894457.4398383, 698270.53247632, 1033793.50042229, 1111197.78708188,
+                   1129440.41968674, 690683.02400505,  746525.1144189, 1044569.88897833])/10000
+    Mz1 = np.array([
+        1044529.85002354, 376658.49271929,  788715.98717477, 920421.37794236, 963492.15920962, 862004.50830856, 436858.00305431, 807310.33247591])/10000
     # Mz0 = np.array(
     #     [
     #         828831.93490585,
@@ -80,13 +84,19 @@ if __name__ == "__main__":
     # Mz_fit = T1_curve(t_fit, T1_star, A, B)
     # print(T1_star, A, B)
     Mz_fit = T1_fit_abs(t_fit, T1_star, A, B)
-    plt.plot(t_fit, Mz_fit)
+    plt.plot(t_fit, Mz_fit*1e3, label='myo')
 
-    # T1_star, T1, A, B = MOLLI_fit(t, Mz1)
-    # print(T1_star, T1, A, B)
-    # Mz_fit = T1_curve(t_fit, T1_star, A, B)
-    # plt.plot(t_fit, Mz_fit)
+    T1_star, T1, A, B = MF_MAGIR(t, Mz1)
+    print(T1_star, T1, A, B)
+    Mz_fit = T1_fit_abs(t_fit, T1_star, A, B)
+    plt.plot(t_fit, Mz_fit*1e3, label="blood")
 
-    plt.scatter(t, Mz0)
-    # plt.scatter(t, Mz1)
+    plt.scatter(t, Mz0*1e3)
+    plt.scatter(t, Mz1*1e3)
+
+    plt.xlabel("TI (s)")
+    plt.ylabel("Mz")
+
+    plt.legend()
+
     plt.show()

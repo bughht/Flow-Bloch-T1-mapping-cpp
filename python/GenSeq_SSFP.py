@@ -60,16 +60,16 @@ class bSSFP:
             self.k_shape[0]
             / (2 * gamma * self.FOV[0] * (self.TR - self.pulse_duration) / 4)
             * 1e3
-        )
+        ) # 
         self.GY_max = (
             self.k_shape[1]
             / (2 * gamma * self.FOV[1] * (self.TR - self.pulse_duration) / 4)
             * 1e3
-        )
-        self.GZ_positive = self.pulse_bandwidth / (gamma * self.slice_thickness)
+        ) 
+        self.GZ_positive = self.pulse_bandwidth / (gamma * self.slice_thickness) # mT/m
         self.GZ_negative = -(self.GZ_positive * self.pulse_duration * 2) / (
             self.TR - self.pulse_duration
-        )
+        ) # mT/m
 
     def add_readout(self, t_start, FA, TR, GX, GY, kY_idx):
         FA, GX, GY, kY_idx = float(FA), float(GX), float(GY), int(kY_idx)
