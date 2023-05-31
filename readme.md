@@ -73,8 +73,8 @@ python run.py
 - [x] MOLLI sequence simulation
 - [x] K-space sampling & reconstruction
 - [x] Flow simulation
-- [ ] Data Collection & Analysis
-- [ ] Paper
+- [x] Data Collection & Analysis
+- [x] Paper
 
 ## License: [GPL-2.0](LICENSE)
 
